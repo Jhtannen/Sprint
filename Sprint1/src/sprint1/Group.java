@@ -1,3 +1,4 @@
+package sprint1;
 import java.util.Date;
 
 public class Group {
@@ -22,7 +23,6 @@ public class Group {
 	public String getDescription() {
 		return description;
 	}
-	
 	
 	
 }
