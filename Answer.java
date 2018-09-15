@@ -5,10 +5,16 @@ import java.util.List;
 
     public class Answer {
     	
-    	public Answer (String title, String text, Date LocalDateTime) { 
+    	private String title;
+		private Object question;
+		private Date dateCreated;
+		public Answer (String title, String text, Date dateCreated) { 
+    		this.title = title;
+    		this.question = question;
+    		this.dateCreated = dateCreated;
     	}
         public Question getQuestion() {
-			return null;
+			return (Question) question;
         }
         public String toString() {
 			return null;
