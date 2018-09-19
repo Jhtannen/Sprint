@@ -2,19 +2,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-    public class Question {
+     class Question extends Post {
 
 		private String title;
-
-		private String question;
-
-		private Object dateCreated;
-
-		private Object Answer;
+		private Date dateCreated;
+		private Answer answer;
+		private List <Answer> answer = new ArrayList<>();
+		
         
         public Question(String title, String text, Date dateCreated) {
+        	su[er(text, dateCreated);
         	this.title = title;
-        	this.question = question;
         	this.dateCreated = dateCreated;
         }
 
@@ -30,23 +28,22 @@ import java.util.List;
 
 
         
-        public void addAnswer(Answer Answer) {
-        this.Answer = toString();
-        List<Answer> Answers = new List<>();
-        
-        	Answers.add((Answer) this.Answer);
+        public void addAnswer(Answer answer) {
+              
+        	answer.add(answer);
         
         }
         
 
        
-        public String getAnswer() {
-			return List<Answer>
+        public List<Answer> getAnswer() {
+			return answers;
         }
 
         
         public String toString() {
-			return null;
+        String result = "Question Title: " + title + "\n" + "Body:"
+        return result; 
         }
 
     }
