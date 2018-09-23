@@ -5,13 +5,12 @@ import java.util.List;
      class Question extends Post {
 
 		private String title;
-		private Date dateCreated;
 		private Answer answer;
 		private List <Answer> answer = new ArrayList<>();
 		
         
         public Question(String title, String text, Date dateCreated) {
-        	su[er(text, dateCreated);
+        	super(text, dateCreated);
         	this.title = title;
         	this.dateCreated = dateCreated;
         }
