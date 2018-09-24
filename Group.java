@@ -3,9 +3,9 @@ import java.util.Date;
 import java.util.List;
 
 public class Group {
-    Date dateCreated;
-    String title;
-    String description;
+    private Date dateCreated;
+    private String title;
+    private String description;
     private List<Answer> answers;
     private List<Membership> memberships = new ArrayList<>();
     private List<Question> questions;
