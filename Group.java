@@ -37,8 +37,8 @@ public class Group {
     Member getMember(String emailAddress) {
 
         for (Membership membership : memberships) {
-            if (membership.member.getEmailAddress().equals(emailAddress)) {
-                return membership.member;
+            if (membership.getMember().getEmailAddress().equals(emailAddress)) {
+                return membership.getMember();
             }
         }
         Date date = new Date();
@@ -52,7 +52,7 @@ public class Group {
     List<Member> getMembers() {
         List<Member> members = new ArrayList<>();
         for (Membership membership : memberships) {
-            members.add(membership.member);
+            members.add(membership.getMember());
         }
         return members;
     }
