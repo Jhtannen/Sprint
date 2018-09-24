@@ -45,6 +45,10 @@ public class Group {
         return new Member("Dummy", "Dummy", "NoScreenName", "NoEmail", date);
     }
 
+    void addMembership(Membership membership) {
+        memberships.add(membership);
+    }
+
     List<Member> getMembers() {
         List<Member> members = new ArrayList<>();
         for (Membership membership : memberships) {
