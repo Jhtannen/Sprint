@@ -1,4 +1,5 @@
 package sprint1;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -6,10 +7,10 @@ import java.util.List;
 
     public class Answer extends Post {
     	
-    	private String title;
+    	
 		private Question question;
 
-		public Answer (Question question, String text, Date dateCreated) { 
+		public Answer (Question question, String text, LocalDateTime dateCreated) { 
     		super(text,dateCreated);
     		this.question = question;
     		}

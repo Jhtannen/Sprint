@@ -2,6 +2,7 @@ package sprint1;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class AnswerTest {
 
-	Date date = new Date();
+	LocalDateTime date = LocalDateTime.now();
 	Question q = new Question("Question One", "This is a question?", date);
 	Answer a = new Answer(q, "This is an answer!", date);
 	

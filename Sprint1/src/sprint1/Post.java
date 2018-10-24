@@ -1,20 +1,19 @@
 package sprint1;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 abstract class Post {
 
     // initialize variables
     protected String text;
-    protected Date date;
+    protected LocalDateTime date;
 
     protected Membership membership;
 
     // constructor to set initial values
-    public Post(String txt, Date date) {
-
+    public Post(String txt, LocalDateTime date) {
         text = txt;
         this.date = date;
-
     }
 
     // returns value of text
@@ -25,7 +24,7 @@ abstract class Post {
     }
 
     // returns local date value
-    public Date getDate() {
+    public LocalDateTime getDate() {
 
         return date;
 
