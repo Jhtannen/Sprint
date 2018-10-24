@@ -1,13 +1,14 @@
 package sprint1;
 import java.util.List;
 import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class MainTest {
 
     public static void main(String[] args) {
 
-        Date date = new Date();
+        LocalDateTime date = LocalDateTime.now();
 
         Member matt = new Member("Matthew", "Ritter", "Matt", "mwritter@valdosta.edu", date);
         Member virginia = new Member("Virginia", "Ritter", "Gin", "vrharnevious@valdosta.edu", date);
