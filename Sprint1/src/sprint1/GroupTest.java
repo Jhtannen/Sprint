@@ -4,16 +4,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
-
 class GroupTest {
 
+	LocalDateTime date = LocalDateTime.now();
+	
 	@Test
 	void testGroup() {
-		Date date = new Date();
-		Group group1 = new Group("Group One", "The best Group ONE", date);
+		
+		Group group1 = new Group("Group One", "The best Group ONE", date.now());
 		
 		assertTrue(isGroup(group1));
 	}
@@ -27,28 +31,28 @@ class GroupTest {
 
 	@Test
 	void testGetDateCreated() {
-		Date date = new Date();
+		
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		assertEquals(date, date);
 	}
 
 	@Test
 	void testGetTitle() {
-		Date date = new Date();
+		
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		assertEquals(group1.getTitle(), "Group One");
 	}
 
 	@Test
 	void testGetDescription() {
-		Date date = new Date();
+		
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		assertEquals("The best Group ONE", group1.getDescription());
 	}
 
 	@Test
 	void testGetNumberOfMembers() {
-		Date date = new Date();
+		
 		Member matt = new Member("Matthew", "Ritter", "Matt", "mritter2283@gmail.com", date);
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		matt.joinGroup(group1, date);
@@ -57,7 +61,7 @@ class GroupTest {
 
 	@Test
 	void testGetMember() {
-		Date date = new Date();
+		
 		Member matt = new Member("Matthew", "Ritter", "Matt", "mritter2283@gmail.com", date);
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		matt.joinGroup(group1, date);
@@ -66,7 +70,7 @@ class GroupTest {
 
 	@Test
 	void testAddMembership() {
-		Date date = new Date();
+		
 		Member matt = new Member("Matthew", "Ritter", "Matt", "mritter2283@gmail.com", date);
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		matt.joinGroup(group1, date);
@@ -75,7 +79,7 @@ class GroupTest {
 
 	@Test
 	void testGetMembers() {
-		Date date = new Date();
+		
 		Member matt = new Member("Matthew", "Ritter", "Matt", "mritter2283@gmail.com", date);
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		matt.joinGroup(group1, date);
@@ -87,7 +91,8 @@ class GroupTest {
 
 	@Test
 	void testGetQuestions() {
-		Date date = new Date();
+		
+		
 		Member matt = new Member("Matthew", "Ritter", "Matt", "mritter2283@gmail.com", date);
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		matt.joinGroup(group1, date);
@@ -103,7 +108,7 @@ class GroupTest {
 
 	@Test
 	void testGetAnswers() {
-		Date date = new Date();
+		
 		Member matt = new Member("Matthew", "Ritter", "Matt", "mritter2283@gmail.com", date);
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		matt.joinGroup(group1, date);
@@ -123,7 +128,7 @@ class GroupTest {
 
 	@Test
 	void testToString() {
-		Date date = new Date();
+		
 		Group group1 = new Group("Group One", "The best Group ONE", date);
 		assertEquals("Group: Group One",group1.toString());
 	}
