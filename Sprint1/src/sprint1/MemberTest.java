@@ -2,6 +2,7 @@ package sprint1;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class MemberTest {
 	
-	Date date = new Date();
+	LocalDateTime date = LocalDateTime.now();
 	Group g = new Group("Group one", "The best Group", date);
 	Member matt = new Member("Matthew", "Ritter", "Matt", "mritter2283@gmail.com", date);
 	@Test
