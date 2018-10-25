@@ -14,6 +14,27 @@ class SiteManager {
    
    //Adds a new Member provided they don’t already exist returning whether successful or not
    public boolean addMember(String firstName, String lastName, String screenName, String emailAddress, LocalDateTime dateCreated) {
+      if (memberList.size() == 0) {
+      
+         Member newMember = new Member(firstName, lastName, screenName, emailAddress, dateCreated);
+         memberList.add(newMember);
+      }
+      
+      else if (memberList.size > 0) {
+         for (int i = 0; i < memberList.size(), i++) {
+            if (firstName != memberList.get(i).getFirstname() && 
+                lastName != memberList.get(i).getLastName() &&
+                screenName != memberList.get(i).getScreenName() &&
+                emailAddress != memberList.get(i).getEmailAddress()) {
+                
+                Member newMember = new Member(firstName, lastName, screenName, emailAddress, dateCreated);
+                memberList.add(newMember);
+            }
+            
+            else {
+               continue
+            }
+         }  
    }
    
    // Returns the Member corresponding to this emailAddress if they exist
