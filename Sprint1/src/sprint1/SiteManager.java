@@ -20,8 +20,8 @@ class SiteManager {
          memberList.add(newMember);
       }
       
-      else if (memberList.size > 0) {
-         for (int i = 0; i < memberList.size(), i++) {
+      else if (memberList.size() > 0) {
+         for (int i = 0; i < memberList.size(); i++) {
             if (firstName != memberList.get(i).getFirstname() && 
                 lastName != memberList.get(i).getLastName() &&
                 screenName != memberList.get(i).getScreenName() &&
@@ -32,13 +32,32 @@ class SiteManager {
             }
             
             else {
-               continue
+               continue;
             }
          }  
    }
    
    // Returns the Member corresponding to this emailAddress if they exist
    public Member getMember(String emailAddress) {
+   
+      Member member = null;
+      if (memberList.size() == 0) {
+         return member;
+      }
+      
+      if memberList.size() > 0) {
+         for (int i; i < memberList.size(); i++) {
+            if (memberList.get(i).getEmailAddress() == emailAddress) {
+                member = memberlist.get(i);
+                break;
+            }
+            
+            else {
+               continue;
+            }
+         }
+      }
+      return member;
    }
    
    //Returns a list of all Members, sorted by last name, then first name
