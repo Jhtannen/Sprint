@@ -1,19 +1,18 @@
 package sprint1;
 
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Arrays;
-
-
 import java.util.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.*;
+import java.util.TreeMap;
+import java.util.Map;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class Member {
-	//private Date dateCreated;
+
+public class Member {	
 	private LocalDateTime dateCreated;
 	private String firstName;
 	private String lastName;
@@ -21,7 +20,6 @@ public class Member {
 	private String emailAddress;
 	private List<Membership> memberships = new ArrayList<>();
 	
-
 
 	// Constructor method	
 	public Member(String firstName, String lastName, String screenName, String emailAddress, LocalDateTime dateCreated) {
@@ -33,7 +31,7 @@ public class Member {
 	}
 
 	
-	//returns email address
+	//returns member's email address
 	public String getEmailAddress() {
 		return this.emailAddress;
 	}
@@ -147,7 +145,6 @@ public class Member {
 			if (membership.getGroup().equals(groupName)) {
 				answer.setMembership(membership);
 				membership.getAnswers().add(answer);
-				//membership.addAnswer(answer);
 			}
 		}			
 	}
@@ -179,15 +176,14 @@ public class Member {
 	}
 	
 	
-	//getGroups(n:int):List<Group> – Returns a list of the n Groups that the member is most active in,
-	//sorted on title. Measure most active by the total questions posted and answers provided, in total. 
+	//Returns a list of the n Groups that the member is most active in, sorted on title.
+	//Measure most active by the total questions posted and answers provided, in total. 
 	//If there are not n groups, then return the groups that exist.
 	List<Group> getGroups(int n) {
-		int activity=0;
 		Map<Group, Integer> map = new TreeMap<>();
 		ArrayList<Group> GroupList = new ArrayList<>();
 		for (Membership membership: memberships) {
-			 map.put(membership.getGroup(), membership.getGroup().getQuestions().size() + membership.getGroup().getAnswers().size() );///////////////////////
+			 map.put(membership.getGroup(), membership.getGroup().getQuestions().size() + membership.getGroup().getAnswers().size() );
 		}
 		if (map.size() <= n) {
 			for (Map.Entry entry : map.entrySet() ) {
@@ -206,8 +202,8 @@ public class Member {
 	}
 	
 	
-	//b.	getQuestions(group:Group, n:int):List<Question> – Returns the n most recent questions asked by 
-	//this member in this group sorted on the order they were asked, most recent first.
+	// Returns the n most recent questions asked by this member in
+	//this group sorted on the order they were asked, most recent first.
 	List<Question> getQuestions(Group group, int n) {
 		ArrayList<Question> questionsList = new ArrayList<Question>();
 		for (Membership membership: memberships) {
@@ -215,7 +211,6 @@ public class Member {
 				questionsList.addAll( membership.getQuestions());
 			}
 		}
-		
 		for (int i = 0; i < questionsList.size() - n; i++) {
 			questionsList.remove(i);
 		}
@@ -224,7 +219,7 @@ public class Member {
 	}
 
 	
-	//c.getAnswers (group:Group, n:int):List<Answer> – Returns the n most recent answers asked by this 
+	//Returns the n most recent answers asked by this 
 	//member in this group sorted on the order they were provided, most recent first.
 	List<Question> getAnswers(Group group, int n) {
 		ArrayList<Question> answersList = new ArrayList<Question>();
