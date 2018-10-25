@@ -22,7 +22,7 @@ class SiteManager {
       
       else if (memberList.size() > 0) {
          for (int i = 0; i < memberList.size(); i++) {
-            if (firstName != memberList.get(i).getFirstname() && 
+            if (firstName != memberList.get(i).getFirstName() && 
                 lastName != memberList.get(i).getLastName() &&
                 screenName != memberList.get(i).getScreenName() &&
                 emailAddress != memberList.get(i).getEmailAddress()) {
@@ -48,7 +48,7 @@ class SiteManager {
       if memberList.size() > 0) {
          for (int i; i < memberList.size(); i++) {
             if (memberList.get(i).getEmailAddress() == emailAddress) {
-                member = memberlist.get(i);
+                member = memberList.get(i);
                 break;
             }
             
