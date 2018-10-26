@@ -9,7 +9,13 @@ class PersistanceManager {
    public PersistanceManager {
    }
    
-   public static save (SiteManager sm, File file) {
+   public static save (SiteManager sm, FileOutputStream file) {
+      file = new FileOutputStream("SiteManager.java");
+      ObjectOutputStream binFile = new ObjectOutputStream(file);
+      binFile.writeObject(sm);
+      binFile.flush();
+      binFile.close();
+      
    }
    
    public static read (File file) {
