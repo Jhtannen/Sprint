@@ -161,7 +161,33 @@ public class Member {
 	//Returns a list of the n Groups that the member is most active in, sorted on title.
 	//Measure most active by the total questions posted and answers provided, in total. 
 	//If there are not n groups, then return the groups that exist.
-	List<Group> getGroups(int n) {
+	List<Group> getGroups(int n) {		
+		Map<Integer, Group> map = new TreeMap<>();
+		ArrayList<Group> groups = new ArrayList<>();
+		for (Membership membership: memberships) {
+			 map.put(membership.getGroup().getQuestions().size() + membership.getGroup().getAnswers().size(), membership.getGroup() );
+		}
+		if (map.size() < n) {
+			for (int i=0; i < map.size(); i++ ) {
+				groups.add( map.get(i) );
+			}			
+			return groups; 	
+		}
+		int count = n;
+		for (int i = map.size() -1; count > 0; count--, i--) {
+			groups.add(map.get(i));		
+		}
+		
+		Collections.sort(groups, new Comparator<Group>()  {
+			@Override 
+			public int compare(Group o1, Group o2) {
+				return o1.getTitle().compareTo(o2.getTitle() );
+			}
+		});
+		return groups;
+	}
+		
+		/*
 		Map<Group, Integer> map = new TreeMap<>();
 		ArrayList<Group> GroupList = new ArrayList<>();
 		for (Membership membership: memberships) {
@@ -173,15 +199,15 @@ public class Member {
 			}			
 			return GroupList; 	
 		}
-		int counter = 0;
+		int counter = n;;
 		for (Map.Entry entry : map.entrySet() ) {
 			counter++;
 			if (counter <= map.size() - n) {
 				GroupList.add((Group)entry.getKey() );
 			}
 		}
-		return GroupList;
-	}
+		return GroupList;*/
+	
 	
 	// Returns the n most recent questions asked by this member in
 	//this group sorted on the order they were asked, most recent first.
