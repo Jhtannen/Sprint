@@ -186,28 +186,6 @@ public class Member {
 		});
 		return groups;
 	}
-		
-		/*
-		Map<Group, Integer> map = new TreeMap<>();
-		ArrayList<Group> GroupList = new ArrayList<>();
-		for (Membership membership: memberships) {
-			 map.put(membership.getGroup(), membership.getGroup().getQuestions().size() + membership.getGroup().getAnswers().size() );
-		}
-		if (map.size() <= n) {
-			for (Map.Entry entry : map.entrySet() ) {
-				GroupList.add((Group)entry.getKey() );
-			}			
-			return GroupList; 	
-		}
-		int counter = n;;
-		for (Map.Entry entry : map.entrySet() ) {
-			counter++;
-			if (counter <= map.size() - n) {
-				GroupList.add((Group)entry.getKey() );
-			}
-		}
-		return GroupList;*/
-	
 	
 	// Returns the n most recent questions asked by this member in
 	//this group sorted on the order they were asked, most recent first.
@@ -262,7 +240,7 @@ public class Member {
 						data += answer + "\n"; 
 					}
 				}
-				data += "\n------Groups this member is a member of------\n";
+				data += "\n------Groups this member has joined------\n";
 				for (Membership membership: memberships) { 
 						data += membership.getGroup() + "\n"; 
 				}				
