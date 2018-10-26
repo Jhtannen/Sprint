@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Collections;
 import java.util.Comparator;
 
-
 public class Member {	
 	private LocalDateTime dateCreated;
 	private String firstName;
@@ -20,7 +19,6 @@ public class Member {
 	private String emailAddress;
 	private List<Membership> memberships = new ArrayList<>();
 	
-
 	// Constructor method	
 	public Member(String firstName, String lastName, String screenName, String emailAddress, LocalDateTime dateCreated) {
 		this.firstName = firstName;
@@ -30,43 +28,36 @@ public class Member {
 		this.dateCreated = dateCreated;
 	}
 
-	
-	//returns member's email address
+		//returns member's email address
 	public String getEmailAddress() {
 		return this.emailAddress;
 	}
 
-	
 	//returns the date member was created
 	public LocalDateTime getDateCreated() {
 		return this.dateCreated;
 	}
 
-	
 	//returns the member's first name
 	public String getFirstName() {
 		return this.firstName;
 	}
 
-	
 	//returns the member's last name
 	public String getLastName() {
 		return this.lastName;
 	}
-
 	
 	//returns screen name
 	public String getScreenName() {
 		return this.screenName;
 	}
-	
-	
+		
 	//returns list of memberships this member is a part of
-	protected List<Membership> getMemberships() {
+	List<Membership> getMemberships() {
 		return memberships;
 	}
 	// end of getter methods
-	
 	
     //Joins this member to group and records the dateJoined
 	public void joinGroup(Group group, LocalDateTime date) {
@@ -74,14 +65,12 @@ public class Member {
 	    this.memberships.add(membership);
 	    group.addMembership(membership);
 	}
-
 	
 	//Returns the number of groups this member is a member of
 	public int getNumGroups() {
 		return this.memberships.size();
 	}
 
-	
 	//Returns the Group that corresponds to the groupID
 	public Group getGroup(String groupID) {
 		Group temp = null;
@@ -93,7 +82,6 @@ public class Member {
 		}
 		return temp;
 	}
-
 	
 	//Returns a list of Groups the member is a member of
 	public List<Group> getGroups() {
@@ -109,8 +97,7 @@ public class Member {
 		});
 		return groupList;
 	}	
-	
-	
+		
 	//Adds the question to the group by this member and records
 	//the date the question was asked
 	public void addQuestion(Group groupName, Question question, LocalDateTime date) {
@@ -122,7 +109,6 @@ public class Member {
 			}
 		}	
 	}
-
 	
 	//Returns the date this member joined this group
 	public LocalDateTime getDateJoined(Group groupName) {
@@ -136,7 +122,6 @@ public class Member {
 		return temp;
 	}
 
-	
 	//Adds this member's answer to this question which is in this group and 
 	//records the date answered
 	public void addAnswer(Group groupName, Question question, Answer answer, LocalDateTime date) {
@@ -148,7 +133,6 @@ public class Member {
 			}
 		}			
 	}
-
 	
 	//Returns all questions asked by this member in this group
 	public List<Question> getQuestions(Group group) {
@@ -162,7 +146,6 @@ public class Member {
 		return (questionsList);
 	}
 
-	
 	//Returns all answers asked by this member in this group
 	public List<Answer> getAnswers(Group groupName) {
 		ArrayList<Answer> answersList = new ArrayList<Answer>();
@@ -174,7 +157,6 @@ public class Member {
 	    Collections.reverse(answersList);
 	    return answersList;
 	}
-	
 	
 	//Returns a list of the n Groups that the member is most active in, sorted on title.
 	//Measure most active by the total questions posted and answers provided, in total. 
@@ -191,7 +173,7 @@ public class Member {
 			}			
 			return GroupList; 	
 		}
-		int counter =0;
+		int counter = 0;
 		for (Map.Entry entry : map.entrySet() ) {
 			counter++;
 			if (counter <= map.size() - n) {
@@ -200,7 +182,6 @@ public class Member {
 		}
 		return GroupList;
 	}
-	
 	
 	// Returns the n most recent questions asked by this member in
 	//this group sorted on the order they were asked, most recent first.
@@ -218,7 +199,6 @@ public class Member {
 		return questionsList;
 	}
 
-	
 	//Returns the n most recent answers asked by this 
 	//member in this group sorted on the order they were provided, most recent first.
 	List<Question> getAnswers(Group group, int n) {
@@ -234,7 +214,6 @@ public class Member {
 		Collections.reverse(answersList);
 		return answersList;
 	}
-
 
 	//Provides useful information about this member, neatly formatted
 	@Override
