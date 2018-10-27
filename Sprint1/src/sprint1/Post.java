@@ -1,5 +1,7 @@
 package sprint1;
 import java.time.LocalDateTime;
+import java.util.List;//
+import java.util.ArrayList;//
 
 abstract class Post {
 
@@ -8,6 +10,8 @@ abstract class Post {
     protected LocalDateTime date;
 
     protected Membership membership;
+    List<Comment> comments = new ArrayList<>();//
+    List<Like> likes = new ArrayList<>();//
 
     // constructor to set initial values
     public Post(String txt, LocalDateTime date) {
@@ -61,9 +65,23 @@ abstract class Post {
 
     // returns membership status
     protected Membership getMembership() {
-
-        return membership;
+        return membership;               
 
     }
+    
+    
+    public void removeComment(Comment deleteComment) {
+    	for (Comment comment: comments) {
+    		if (deleteComment.equals(comment)) {
+    			comments.remove(comment);
+    		}
+    	}
+    } 
+    
+    
+    
+    
+    
+    
 
 }

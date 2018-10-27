@@ -247,4 +247,40 @@ public class Member {
         return data;       		
 	}
 
+	//Likes the post passed in as an argument and gives 5 points to the poster
+	private void likePost(Post post) {
+		if (this.getGroups().contains(post.getGroup() ) ) {//check if member is in the group in which "post" was posted
+			post.likes.add(new Like(this) );
+			post.getMembership().addPoints(5);
+		}
+	}
+	
+	//Adds a comment to a post and gives 10 points to the poster
+	private void commentOnPost(Post post, Comment comment) {
+		if (this.getGroups().contains(post.getGroup() ) ) {//check if member is in the group in which "post" was posted
+			post.comments.add(comment);
+			post.getMembership().addPoints(10);
+		}
+	}
+	
+	private void editComment(Comment comment, String newText) {
+		comment.editText(newText);
+	}
+	
+	
+	//private void deleteComment(Post post, Comment comment) {
+		//for (Comment comment: post.getComments()) {
+			
+		//}
+	//}
+	
+	//Adds 40 points to the member who wrote the best answer
+	private void chooseBestAnswer(Answer answer) {
+		answer.getMembership().addPoints(40);
+	}
+
+	
+	
+	
+
 }//end of Member.java class
