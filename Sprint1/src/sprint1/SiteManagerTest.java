@@ -145,7 +145,11 @@ class SiteManagerTest {
 			m.joinGroup(sm.getGroup("Group-2"), dateCreated);
 			m.addAnswer(sm.getGroup("Group-2"), q, a, dateCreated);
 		}
-		
+		for(Group g: sm.getGroups()) {
+			for(Member m : g.getMembers()) {
+				System.out.println(m);
+			}
+		}
 		assertTrue(sm.getActiveMembers(3).contains(sm.getMember("12@gmail.com")));
 		assertTrue(sm.getActiveMembers(3).contains(sm.getMember("51@gmail.com")));
 		assertTrue(sm.getActiveMembers(3).contains(sm.getMember("52@gmail.com")));

@@ -1,75 +1,85 @@
 package sprint1;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Date;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class IntMainTest {
-
+	
+	 static LocalDateTime date = LocalDateTime.now();
+     static PersistanceManager pm = new PersistanceManager();
+     static SiteManager sm = new SiteManager();
+     static List<String> member_firstnames = new ArrayList<>();
+     static List<String> member_lastnames = new ArrayList<>();
+     static String[] email_end = {"@gmail.com", "@yahoo.com", "@hotmail.com", "@icloud.com"};
+     static String[] random_names = {"Maupassant", "Legacy","Bombarder","Disunion","Procurer","Accentuable","Tenser","Renormalizing","Histochemistry","Unevenness"};
+     static String lorem_ipsum = "is a long established fact that a reader will be distracted by the "
+     		+ "readable content of a page when looking at its layout. The point of using Lorem Ipsum is "
+     		+ "that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', "
+     		+ "making it look like readable English.";
     public static void main(String[] args) {
-
-        LocalDateTime date = LocalDateTime.now();
-
-        Member matt = new Member("Matthew", "Ritter", "Matt", "mwritter@valdosta.edu", date);
-        Member virginia = new Member("Virginia", "Ritter", "Gin", "vrharnevious@valdosta.edu", date);
-
-        Group group1 = new Group("First Group", "This is an awesome Group1", date);
-        Group group2 = new Group("Second Group", "This is an awesome Group2", date);
-
-        matt.joinGroup(group1, date);
-        matt.joinGroup(group2, date);
-        virginia.joinGroup(group2, date);
-
-        Question question1 = new Question("First Question Title", "Is this a question?", date);
-        Question question2 = new Question("Second Question Title", "Do you know?", date);
-
-        matt.addQuestion(group1, question1, date);
-        matt.addQuestion(group1, question2, date);
-        matt.addQuestion(group2, question2, date);
-
-        System.out.println("============");
-        System.out.println("getMember(mwritter@valdosta.edu):" + group1.getMember("mwritter@valdosta.edu"));
-        System.out.println("============");
-
-        for (Group group : matt.getGroups()) {
-            System.out.println(matt.getScreenName() + " Joined: " + group.getTitle() + " " + matt.getDateJoined(group)
-                    + "\n" + "============");
-        }
-        for (Group group : virginia.getGroups()) {
-            System.out.println(virginia.getScreenName() + " Joined: " + group.getTitle() + " "
-                    + virginia.getDateJoined(group) + "\n" + "============\n");
-        }
-        System.out.println("============");
-        System.out.println("getMembers(group2):" + group2.getMembers());
-        System.out.println("============");
-        Answer answer1 = new Answer(question1, "This is the answer", date);
-
-        matt.addAnswer(group1, question1, answer1, date);
-        System.out.println("============");
-        System.out.println("GetQuestions For Matt: \n" + matt.getQuestions(group1));
-        System.out.println("============");
-        System.out.println("GetAnswers For Matt: " + matt.getAnswers(group1));
-        System.out.println("============");
-        System.out.println("GetAnswers For Group1: " + group1.getAnswers());
-        System.out.println("============");
-        System.out.println("GetAuthor of answer1" + answer1.getAuthor());
-        System.out.println("============");
-        System.out.println("Member toString method: " + matt.toString());
-        System.out.println("============");
-        System.out.println("***************SITEMANAGER STUFF***********");
-        SiteManager sm = new SiteManager();
-        sm.addGroup("First Group", "This is an awesome Group1", date);
-        sm.addGroup("Second Group", "This is an awesome Group2", date);
-        sm.addMember("Matthew", "Ritter", "Matt", "mwritter@valdosta.edu", date);
-        sm.getMember("mwritter@valdosta.edu").joinGroup(sm.getGroup("Second Group"), date);
-        sm.getMember("mwritter@valdosta.edu").joinGroup(sm.getGroup("First Group"), date);
-        System.out.println(sm.getMember("mwritter@valdosta.edu"));
-        System.out.println(sm.getGroup("First Group"));
-        System.out.println("g2 has: "+sm.getGroup("Second Group").getMembers());
-        System.out.println("g1 has: "+sm.getGroup("First Group").getMembers());
-        System.out.println(sm.getPopularGroups(5));
-        System.out.println("No errors");
-
+    	try {
+    		File name_file = new File("member_names.txt");
+    		Scanner scan = new Scanner(name_file);
+    		while(scan.hasNextLine()) {
+    			String name = scan.nextLine();
+    			member_firstnames.add(name.split(" ")[0]);
+    			member_lastnames.add(name.split(" ")[1]);
+    		}
+    	}catch(Exception e) {
+    		log(e.toString());
+    	}
+    	
+        setUpData();
+        
+    }
+    
+    
+    static void setUpData() {
+    	log("Setting up data...");
+    	int size = member_lastnames.size();
+    	int numberOfGroups = 10;
+    	
+    	
+    	while(size > 0) {
+    		sm.addMember(member_firstnames.get(size - 1), member_lastnames.get(size - 1), member_firstnames.get(size - 1),  member_lastnames.get(size - 1) + email_end[size % email_end.length], date);
+    		size--;
+    	}
+    	
+    	while(numberOfGroups > 0) {
+    		sm.addGroup(random_names[numberOfGroups - 1], lorem_ipsum, date);
+    		numberOfGroups--;
+    	}
+    	
+    	for(Member m: sm.getMembers()) {
+    		int random = (int) (Math.random() * 100) + 1;
+    		sm.getMember(m.getEmailAddress()).joinGroup(sm.getGroups().get(random % random_names.length), date);
+    	}
+    	for(Group g : sm.getGroups()) {
+    		log("Group: " + g.getTitle() + " has " + g.getNumOfMembers() + " Members");
+    	}
+    	
+    	
+    }
+    
+    static void log(String msg) {
+    	System.out.println(msg);
+    }
+    static void log(int num) {
+    	System.out.println(num);
+    }
+   
+   
+    
+    
+  
+    
+   
+    
+    static void log(boolean msg) {
+    	System.out.println(msg);
     }
 
 }

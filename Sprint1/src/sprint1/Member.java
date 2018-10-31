@@ -274,24 +274,15 @@ public class Member implements Serializable{
 				"\nScreen Name: " + screenName + 
 				"\nEmail address: " + emailAddress + 
 				"\nDate Joined: " + dateCreated +
-				"\nPoints: " + displayPoints() +
-				"\n------Total Posts by this member: "+ this.getNumberOfTotalPosts() + "------\n\n" +
-				"\n------Total Questions by this member: "+ this.getNumberOfTotalQuestions() + "------\n";
-		for (Membership membership: memberships) {
-			for (Question question: membership.getQuestions()) {
-				data += question + "\n"; 
-			}
-		}
-		data += "\n------Answers by this member: "+ this.getNumberOfTotalAnswers() + "------\n";
-		for (Membership membership: memberships) {
-			for (Answer answer: membership.getAnswers()) {
-				data += answer + "\n"; 
-			}
-		}
+				"\nPoints: " + displayPoints();
+				
+		
 		data += "\n------Groups this member is a member of------\n";
-		for (Membership membership: memberships) { 
-			data += membership.getGroup() + "\n"; 
-		}				
+		int size = this.memberships.size();
+		while(size > 0) {
+			data += memberships.get(memberships.size()-1).getGroup().getTitle();
+			size--;
+		}
 		return data;       		
 	}
 	
