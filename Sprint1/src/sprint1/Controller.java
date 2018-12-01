@@ -321,6 +321,8 @@ public class Controller {
 		Label questionL = new Label();
 		questionL.setText("Questions (" + sm.getGroup(groupTitle).getQuestions().size() + ")" );
 		ListView<String> questions = new ListView<String>();
+		questions.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);////
+		ArrayList<Question> questionsList = new ArrayList<Question>();////  
 		Label memberL = new Label();/////////
 		memberL.setText("Members (" + sm.getGroup(groupTitle).getNumOfMembers() + ")" );
 		ListView<String> members = new ListView<String>();//////////
@@ -328,6 +330,7 @@ public class Controller {
 		for(Question question : sm.getGroup(groupTitle).getQuestions()) {
 			if(!questions.getItems().contains(question.getTitle())) {
 				questions.getItems().add(question.getTitle());
+				questionsList.add(question);
 			}
 		}
 		for (Member m: sm.getGroup(groupTitle).getMembers()) {//////////
@@ -335,8 +338,29 @@ public class Controller {
 				members.getItems().add(m.getScreenName());///////////
 			}
 		}
-			
-
+		
+		questions.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				groupInfoVB.getChildren().clear();
+				String questionClicked = questions.getSelectionModel().getSelectedItem();
+				ListView<String> answers = new ListView<String>();
+				for (Question q: questionsList) {//////////
+					
+					if (q.getTitle() == questionClicked) {
+						for (Answer a: q.getAnswers()) {
+						answers.getItems().add(a.getText());
+						}
+					}
+				}		
+				Label questionsL = new Label("Questions");
+				Label answersL = new Label("Answers");
+				groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers);
+				
+			}
+		});
+		
+		
 		btnAdd.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {		
