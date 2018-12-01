@@ -20,12 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -47,7 +50,8 @@ public class Controller {
 	private File file = new File("SiteManger_File");
 	private List<Member> members;
 	private List<Group> groups;
-	
+	protected VBox groupInfoVB = new VBox();
+
 	@FXML
 	private ListView<String> options;
 	@FXML
@@ -56,9 +60,9 @@ public class Controller {
 	private BorderPane mainFrame;
 	@FXML
 	private GridPane mainFunction;
-	
-	
-	
+
+
+
 	public void initialize() {
 		if(file.exists()) {
 			try {
@@ -67,15 +71,15 @@ public class Controller {
 				members = sm.getMembers();
 				groups = sm.getGroups();
 			} catch(Exception e) {
-				System.out.println(e + "Erro Couldnt Load SiteManager");
+				System.out.println(e + "Error Couldn't Load SiteManager");
 			}
 		} else {
 			sm = new SiteManager();
 			members = new ArrayList<Member>();
 			groups = new ArrayList<Group>();
 		}
-		
-		
+
+
 		pm = new PersistanceManager();
 		String[] siteOptions = {"Add Member", "Add Group", "Members", "Groups"};
 		options.getItems().setAll(siteOptions);
@@ -83,13 +87,15 @@ public class Controller {
 		optionInstructions.setEditable(false);
 		optionInstructions.setPrefRowCount(1);
 	}
-	
+
 	@FXML
 	public void handleClickListView() {
 		String option = options.getSelectionModel().getSelectedItem();
 		optionInstructions.setText("You've Choosen to: " + option);
-		
-		if(option.equals("Add Member")) {
+
+		if(option == null){
+			optionInstructions.setText("");
+		}else if(option.equals("Add Member")) {
 			mainFrame.setCenter(mainFunction);
 			createAddMemberScene();
 		} 
@@ -100,16 +106,14 @@ public class Controller {
 			createMembersScene();
 		} else if(option.equals("Groups")) {
 			createGroupScene();
-		}
+		} 
 		else {
 			mainFunction.getChildren().clear();
 		}
-		
-		
 	}
-	
-	
-	
+
+
+
 	private void createAddMemberScene() {
 		mainFunction.getChildren().clear();
 		Label emailL = new Label("Email");
@@ -131,10 +135,10 @@ public class Controller {
 					if(!sm.addMember(firstNameTF.getText(), lastNameTF.getText(), screenNameTF.getText(), emailTF.getText(), dateCreated)) {
 						optionInstructions.setText("  ERROR - Member with this email already exists");
 					} else {
-						optionInstructions.setText("  SUCSESS - Member was added");
+						optionInstructions.setText("  SUCCSESS - Member was added");
 					}
 					save();
-					
+
 				} else {
 					optionInstructions.setText("  ERROR - all fields are required");
 				}	
@@ -152,7 +156,7 @@ public class Controller {
 		mainFunction.add(screenNameTF, 1, 3);
 		mainFunction.add(btnSave, 2, 4);
 	}
-	
+
 	private void createAddGroupScene() {
 		mainFunction.getChildren().clear();
 		Label titleL = new Label("Title");
@@ -185,74 +189,330 @@ public class Controller {
 		mainFunction.add(descriptionTA, 1, 1);
 		mainFunction.add(btnSave, 2, 4);
 	}
-	
+
 	private void createMembersScene() {
+		mainFunction.getChildren().clear();
 		ListView<String> membersEmailList = new ListView<String>();
-		ListView<String> memberGroupList = new ListView<String>();
 		BorderPane bp = new BorderPane();
-		VBox memberInfoVB = new VBox();
-		Label memberNameL = new Label();
-		Label groupL = new Label("Groups");
-		Label groupL2 = new Label("Groups");
-		Label memberDateCreatedL = new Label();
-		ScrollPane sp = new ScrollPane();
 		bp.setLeft(membersEmailList);
-		
-		for(Member member : members) {
-			membersEmailList.getItems().add(member.getEmailAddress()); 
+
+		for(Member m : members) {
+			membersEmailList.getItems().add(m.getEmailAddress()); 
 		}
-		
-		
-		
+
 		membersEmailList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		membersEmailList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				try {
+					groupInfoVB.getChildren().clear();
+					ComboBox<String> groupCB = new ComboBox<String>();
+					ListView<String> memberGroupList = new ListView<String>();
+					List<String> thisMembersGroups = new ArrayList<String>();
+					VBox memberInfoVB = new VBox();
+					HBox labelAndCombo = new HBox();
+					Label memberNameL = new Label();
+					Label groupL = new Label("Groups");
+					Label memberDateCreatedL = new Label();
+					ScrollPane sp = new ScrollPane();
+
+					Label groupNameL = new Label();
+					groupCB.setPromptText("Join Group");
 					String member = membersEmailList.getSelectionModel().getSelectedItem();
-					Member thisMember = sm.getMember(member);
-					for(Group group : thisMember.getGroups()) {
-						memberGroupList.getItems().add(group.getDescription());
+
+					for(Group group : sm.getMember(member).getGroups()) {
+						if(!memberGroupList.getItems().contains(group.getTitle())) {
+							memberGroupList.getItems().add(group.getTitle());
+							thisMembersGroups.add(group.getTitle());
+						}
+
 					}
+
+					for(Group group : sm.getGroups()) {
+						if(!thisMembersGroups.contains(group.getTitle())) {
+							groupCB.getItems().add(group.getTitle());
+						}
+					}
+
+					groupCB.valueProperty().addListener(new ChangeListener<String>() {
+						@Override
+						public void changed(ObservableValue<? extends String> observable, String oldValue,
+								String newValue) {
+							LocalDateTime date = LocalDateTime.now();
+							System.out.println(newValue);
+							sm.getMember(membersEmailList.getSelectionModel().getSelectedItem()).joinGroup(sm.getGroup(newValue), date);
+							for(Group group : sm.getMember(member).getGroups()) {
+								if(!memberGroupList.getItems().contains(group.getTitle())) {
+									memberGroupList.getItems().add(group.getTitle());
+									thisMembersGroups.add(group.getTitle());
+								}
+
+							}
+
+							save();
+						}
+
+					});
+
 					memberGroupList.setMaxHeight(100.0);
-					
+					memberGroupList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent event) {
+							groupInfoVB.getChildren().clear();
+							String groupTitle = memberGroupList.getSelectionModel().getSelectedItem();
+							createGroupPane(groupTitle, member);
+						}
+					});
+
+
+
+
 					optionInstructions.setText("You've Choosen to: " + member);
 					String name = sm.getMember(member).getFirstName() + " " + sm.getMember(member).getLastName();
 					memberNameL.setText(name);
-					memberDateCreatedL.setText("Added: " +  thisMember.getDateCreated().toString());
-					memberInfoVB.getChildren().addAll(memberNameL, memberDateCreatedL, groupL, memberGroupList);
-					
+					memberDateCreatedL.setText("Added: " +  sm.getMember(member).getDateCreated().toString());
+					labelAndCombo.getChildren().addAll(memberGroupList, groupCB);
+					memberInfoVB.getChildren().addAll(memberNameL, memberDateCreatedL, groupL, labelAndCombo, groupInfoVB);
 					sp.setContent(memberInfoVB);
-					
 					bp.setCenter(sp);
-					
-					System.out.println("Click member: " + name);
-					System.out.println("Email: " + thisMember.getEmailAddress());
-					System.out.println("Number of Groups: " + thisMember.getGroups().size());
-					System.out.println("Part of these Groups: " + thisMember.getGroups().toString());
-					System.out.println("Date Created: " + thisMember.getDateCreated());
-					
-					
-				} catch(Exception e) {
-					System.out.println("Click at member");
-				}
-			}
+				}catch(Exception e) {
+					System.out.println(e);
+				}}
 		});
-		
+
 		mainFrame.setCenter(bp);
 	}
-	
+
 	private void createGroupScene() {
+		groupInfoVB.getChildren().clear();
 		ListView<String> groupTitles = new ListView<String>();
+		groupTitles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		BorderPane bp = new BorderPane();
 		bp.setLeft(groupTitles);
 		for(Group group : groups) {
 			groupTitles.getItems().add(group.getTitle());
 		}
-		
+		groupTitles.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				String groupTitle = groupTitles.getSelectionModel().getSelectedItem();
+				createGroupPane(groupTitle, null);
+			}
+		});
+
+		bp.setCenter(groupInfoVB);
+
+
+
+
+
+
+
+		//!!!!!!!!!!!
+		Button btn1 = new Button("");/////
+		Button btn2 = new Button("Add ");
+		Button btn3 = new Button("Add ");
+		Button btn4 = new Button("Add ");
+		Button btn5 = new Button("Add ");
+		Button btn6 = new Button("Add ");
+		Button btn7 = new Button("Add ");
+		Button btn8 = new Button("Add ");
+		Button btn9 = new Button("Add ");
+		Button btn10 = new Button("Add ");
+		Button btn11 = new Button("Add ");
+		Button btn12 = new Button("Add ");
+		Button btn13 = new Button("Add ");
+		Label popularGroups = new Label("Most popular groups (most members):");
+		Label activeGroups = new Label("Most active groups (by number of posts):");
+
+		ListView<String> popularGroupTitles = getPopularGroups();//new ListView<String>();
+		ListView<String> activeGroupTitles = getActiveGroups();//new ListView<String>();
+
+
+
+		VBox test = new VBox();///
+		test.getChildren().addAll(popularGroups, popularGroupTitles, activeGroups, activeGroupTitles);//////
+
+		bp.setRight(test);
+		//@@@@@@
+
+
+
+
 		mainFrame.setCenter(bp);
 	}
-	
+
+	private void createGroupPane(String groupTitle, String member) {
+		groupInfoVB.getChildren().clear();
+		String memberEmail = member;
+		Label groupL = new Label(groupTitle);
+		Label questionL = new Label("Questions");
+		ListView<String> questions = new ListView<String>();
+		Button btnAdd = new Button("Add Question");
+		for(Question question : sm.getGroup(groupTitle).getQuestions()) {
+			if(!questions.getItems().contains(question.getTitle())) {
+				questions.getItems().add(question.getTitle());
+			}
+		}
+
+		btnAdd.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {		
+				groupInfoVB.getChildren().clear();				
+				LocalDateTime dateCreated = LocalDateTime.now();
+				Question q = new Question("Title of Question", "Description of question", dateCreated);
+				sm.getMember(memberEmail).addQuestion(sm.getGroup(groupTitle), q, dateCreated);
+				for(Question question : sm.getGroup(groupTitle).getQuestions()) {
+					if(!questions.getItems().contains(question.getTitle())) {
+						questions.getItems().add(question.getTitle());
+					}
+				}
+			}
+		});
+
+
+
+
+		groupInfoVB.getChildren().addAll(groupL, questionL, questions);
+		if(member == null) {///////////////////////////////////////////////////////////
+			groupInfoVB.getChildren().add(btnAdd);//, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12, btn13);
+		}
+
+
+	}
+
+	/*private ListView[] getActiveAndPopularGroups() {//ListView[] arr) {
+
+		ListView<String> popularGroupTitles = new ListView<String>();
+		ListView<String> activeGroupTitles = new ListView<String>();
+
+		ListView[] arr = { popularGroupTitles, activeGroupTitles};
+
+
+		if (groups.size() < 8) {
+
+			for (Group group : sm.getPopularGroups(sm.getGroups().size() ) ) {
+				arr[0].getItems().add(group.getTitle());
+			}
+
+			for (Group group : sm.getActiveGroups(sm.getGroups().size() ) ) {
+				arr[1].getItems().add(group.getTitle());
+			}
+		} else {
+			for (Group group : sm.getPopularGroups(7 ) ) {
+				arr[0].getItems().add(group.getTitle());
+			}
+
+			for (Group group : sm.getActiveGroups(7 ) ) {
+				arr[1].getItems().add(group.getTitle());
+			}
+		}
+
+
+
+
+
+		return arr;
+
+
+
+
+
+	}*/
+
+
+
+
+
+	private ListView getActiveGroups() {//ListView arr) {
+
+
+		ListView<String> activeGroupTitles = new ListView<String>();
+
+		//ListView[] arr = { popularGroupTitles, activeGroupTitles};
+
+
+		if (groups.size() < 8) {
+
+
+
+			for (Group group : sm.getActiveGroups(sm.getGroups().size() ) ) {
+				activeGroupTitles.getItems().add(group.getTitle());
+			}
+		} else {
+
+
+			for (Group group : sm.getActiveGroups(7 ) ) {
+				activeGroupTitles.getItems().add(group.getTitle());
+			}
+		}
+
+
+
+
+
+		return activeGroupTitles;
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+	private ListView getPopularGroups() {//ListView arr) {
+
+
+		ListView<String> popularGroupTitles = new ListView<String>();
+
+		//ListView[] arr = { popularGroupTitles, activeGroupTitles};
+
+
+		if (groups.size() < 8) {
+
+
+
+			for (Group group : sm.getActiveGroups(sm.getGroups().size() ) ) {
+				popularGroupTitles.getItems().add(group.getTitle());
+			}
+		} else {
+
+
+			for (Group group : sm.getActiveGroups(7 ) ) {
+				popularGroupTitles.getItems().add(group.getTitle());
+			}
+		}
+
+
+
+
+
+		return popularGroupTitles;
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	private void save() {
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
@@ -261,8 +521,8 @@ public class Controller {
 			System.out.println("ERROR: "+ e);
 		}
 	}
-	
-	private void handelEmailListClick() {
-		
-	}
+
+
+
+
 }
