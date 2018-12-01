@@ -320,12 +320,20 @@ public class Controller {
 		Label groupL = new Label(groupTitle);
 		Label questionL = new Label("Questions");
 		ListView<String> questions = new ListView<String>();
+		Label memberL = new Label("Members");/////////
+		ListView<String> members = new ListView<String>();//////////
 		Button btnAdd = new Button("Add Question");
 		for(Question question : sm.getGroup(groupTitle).getQuestions()) {
 			if(!questions.getItems().contains(question.getTitle())) {
 				questions.getItems().add(question.getTitle());
 			}
 		}
+		for (Member m: sm.getGroup(groupTitle).getMembers()) {//////////
+			if(!members.getItems().contains(m.getScreenName())) {////////
+				members.getItems().add(m.getScreenName());///////////
+			}
+		}
+			
 
 		btnAdd.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -341,7 +349,7 @@ public class Controller {
 				}
 			}
 		});
-		groupInfoVB.getChildren().addAll(groupL, questionL, questions);
+		groupInfoVB.getChildren().addAll(groupL, questionL, questions, memberL, members);
 		if(member != null) {
 			groupInfoVB.getChildren().add(btnAdd);
 		}
@@ -363,7 +371,7 @@ public class Controller {
 	}
 
 	//Returns a ListView of the 7 most popular groups
-	private ListView getPopularGroups() {//ListView arr) {
+	private ListView getPopularGroups() {
 		ListView<String> popularGroupTitles = new ListView<String>();
 		if (groups.size() < 8) {
 
@@ -371,24 +379,12 @@ public class Controller {
 				popularGroupTitles.getItems().add(group.getTitle());
 			}
 		} else {
-			for (Group group : sm.getActiveGroups(7 ) ) {
+			for (Group group : sm.getActiveGroups(7) ) {
 				popularGroupTitles.getItems().add(group.getTitle());
 			}
 		}
 		return popularGroupTitles;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	private void save() {
@@ -399,8 +395,5 @@ public class Controller {
 			System.out.println("ERROR: "+ e);
 		}
 	}
-
-
-
 
 }
