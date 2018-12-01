@@ -346,7 +346,6 @@ public class Controller {
 				String questionClicked = questions.getSelectionModel().getSelectedItem();
 				ListView<String> answers = new ListView<String>();
 				for (Question q: questionsList) {//////////
-					
 					if (q.getTitle() == questionClicked) {
 						for (Answer a: q.getAnswers()) {
 						answers.getItems().add(a.getText());
@@ -376,7 +375,7 @@ public class Controller {
 			}
 		});
 		groupInfoVB.getChildren().addAll(groupL, questionL, questions, memberL, members);
-		if(member == null) {
+		if(member != null) {
 			groupInfoVB.getChildren().add(btnAdd);
 		}
 		//groupInfoVB.getChildren().addAll(memberL, members);
