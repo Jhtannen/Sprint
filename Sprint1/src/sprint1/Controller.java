@@ -318,9 +318,11 @@ public class Controller {
 		groupInfoVB.getChildren().clear();
 		String memberEmail = member;
 		Label groupL = new Label(groupTitle);
-		Label questionL = new Label("Questions");
+		Label questionL = new Label();
+		questionL.setText("Questions (" + sm.getGroup(groupTitle).getQuestions().size() + ")" );
 		ListView<String> questions = new ListView<String>();
-		Label memberL = new Label("Members");/////////
+		Label memberL = new Label();/////////
+		memberL.setText("Members (" + sm.getGroup(groupTitle).getNumOfMembers() + ")" );
 		ListView<String> members = new ListView<String>();//////////
 		Button btnAdd = new Button("Add Question");
 		for(Question question : sm.getGroup(groupTitle).getQuestions()) {
@@ -350,9 +352,12 @@ public class Controller {
 			}
 		});
 		groupInfoVB.getChildren().addAll(groupL, questionL, questions, memberL, members);
-		if(member != null) {
+		if(member == null) {
 			groupInfoVB.getChildren().add(btnAdd);
 		}
+		//groupInfoVB.getChildren().addAll(memberL, members);
+		
+		
 	}
 
 	//Returns a ListView of the 7 most active groups
