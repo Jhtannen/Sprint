@@ -173,7 +173,7 @@ public class Controller {
 					if(!sm.addGroup(titleTF.getText(), descriptionTA.getText(), dateCreated)) {
 						optionInstructions.setText("  ERROR - Group already exists");
 					} else {
-						optionInstructions.setText("  SUCSESS - Group added");
+						optionInstructions.setText("  SUCCESS - Group added");
 						save();
 					}
 				} else {
@@ -266,7 +266,6 @@ public class Controller {
 
 
 
-
 					optionInstructions.setText("You've Choosen to: " + member);
 					String name = sm.getMember(member).getFirstName() + " " + sm.getMember(member).getLastName();
 					memberNameL.setText(name);
@@ -301,43 +300,16 @@ public class Controller {
 		});
 
 		bp.setCenter(groupInfoVB);
-
-
-
-
-
-
-
-		//!!!!!!!!!!!
-		Button btn1 = new Button("");/////
-		Button btn2 = new Button("Add ");
-		Button btn3 = new Button("Add ");
-		Button btn4 = new Button("Add ");
-		Button btn5 = new Button("Add ");
-		Button btn6 = new Button("Add ");
-		Button btn7 = new Button("Add ");
-		Button btn8 = new Button("Add ");
-		Button btn9 = new Button("Add ");
-		Button btn10 = new Button("Add ");
-		Button btn11 = new Button("Add ");
-		Button btn12 = new Button("Add ");
-		Button btn13 = new Button("Add ");
+		
+		//!!!!!!!!!!!		
 		Label popularGroups = new Label("Most popular groups (most members):");
 		Label activeGroups = new Label("Most active groups (by number of posts):");
-
-		ListView<String> popularGroupTitles = getPopularGroups();//new ListView<String>();
-		ListView<String> activeGroupTitles = getActiveGroups();//new ListView<String>();
-
-
-
-		VBox test = new VBox();///
-		test.getChildren().addAll(popularGroups, popularGroupTitles, activeGroups, activeGroupTitles);//////
-
+		ListView<String> popularGroupTitles = getPopularGroups();
+		ListView<String> activeGroupTitles = getActiveGroups();
+		VBox test = new VBox();
+		test.getChildren().addAll(popularGroups, popularGroupTitles, activeGroups, activeGroupTitles);
 		bp.setRight(test);
 		//@@@@@@
-
-
-
 
 		mainFrame.setCenter(bp);
 	}
@@ -369,135 +341,41 @@ public class Controller {
 				}
 			}
 		});
-
-
-
-
 		groupInfoVB.getChildren().addAll(groupL, questionL, questions);
-		if(member == null) {///////////////////////////////////////////////////////////
-			groupInfoVB.getChildren().add(btnAdd);//, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12, btn13);
+		if(member != null) {
+			groupInfoVB.getChildren().add(btnAdd);
 		}
-
-
 	}
 
-	/*private ListView[] getActiveAndPopularGroups() {//ListView[] arr) {
-
-		ListView<String> popularGroupTitles = new ListView<String>();
+	//Returns a ListView of the 7 most active groups
+	private ListView getActiveGroups() {
 		ListView<String> activeGroupTitles = new ListView<String>();
-
-		ListView[] arr = { popularGroupTitles, activeGroupTitles};
-
-
 		if (groups.size() < 8) {
-
-			for (Group group : sm.getPopularGroups(sm.getGroups().size() ) ) {
-				arr[0].getItems().add(group.getTitle());
-			}
-
-			for (Group group : sm.getActiveGroups(sm.getGroups().size() ) ) {
-				arr[1].getItems().add(group.getTitle());
-			}
-		} else {
-			for (Group group : sm.getPopularGroups(7 ) ) {
-				arr[0].getItems().add(group.getTitle());
-			}
-
-			for (Group group : sm.getActiveGroups(7 ) ) {
-				arr[1].getItems().add(group.getTitle());
-			}
-		}
-
-
-
-
-
-		return arr;
-
-
-
-
-
-	}*/
-
-
-
-
-
-	private ListView getActiveGroups() {//ListView arr) {
-
-
-		ListView<String> activeGroupTitles = new ListView<String>();
-
-		//ListView[] arr = { popularGroupTitles, activeGroupTitles};
-
-
-		if (groups.size() < 8) {
-
-
-
 			for (Group group : sm.getActiveGroups(sm.getGroups().size() ) ) {
 				activeGroupTitles.getItems().add(group.getTitle());
 			}
 		} else {
-
-
 			for (Group group : sm.getActiveGroups(7 ) ) {
 				activeGroupTitles.getItems().add(group.getTitle());
 			}
 		}
-
-
-
-
-
 		return activeGroupTitles;
-
-
-
-
-
 	}
 
-
-
-
-
-
-
+	//Returns a ListView of the 7 most popular groups
 	private ListView getPopularGroups() {//ListView arr) {
-
-
 		ListView<String> popularGroupTitles = new ListView<String>();
-
-		//ListView[] arr = { popularGroupTitles, activeGroupTitles};
-
-
 		if (groups.size() < 8) {
-
-
 
 			for (Group group : sm.getActiveGroups(sm.getGroups().size() ) ) {
 				popularGroupTitles.getItems().add(group.getTitle());
 			}
 		} else {
-
-
 			for (Group group : sm.getActiveGroups(7 ) ) {
 				popularGroupTitles.getItems().add(group.getTitle());
 			}
 		}
-
-
-
-
-
 		return popularGroupTitles;
-
-
-
-
-
 	}
 
 
