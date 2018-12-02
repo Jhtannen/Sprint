@@ -82,7 +82,7 @@ public class Controller {
 
 
 		pm = new PersistanceManager();
-		String[] siteOptions = {"Add Member", "Add Group", "Members", "Groups"};
+		String[] siteOptions = {"Add Member", "Add Group", "Members", "Groups", "Questions", "Answers"};
 		options.getItems().setAll(siteOptions);
 		options.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		optionInstructions.setEditable(false);
@@ -107,12 +107,17 @@ public class Controller {
 			createMembersScene(null);
 		} else if(option.equals("Groups")) {
 			createGroupScene();
-		} 
+		} else if(option.equals("Groups")) {
+			createGroupScene(); 		
+
+		}else if(option.equals("Answers")) {
+			createAnswerScene();
+		} else if (option.equals("Questions")) {
+			createQuestionScene();
+		}	
 		else {
 			mainFunction.getChildren().clear();
 		}
-
-
 	}
 
 
@@ -271,9 +276,6 @@ public class Controller {
 						}
 					});
 
-
-
-
 					optionInstructions.setText("You've Choosen to: " + member);
 					String name = sm.getMember(member).getFirstName() + " " + sm.getMember(member).getLastName();
 					memberNameL.setText(name);
@@ -296,11 +298,10 @@ public class Controller {
 		VBox groupsListVBox = new VBox();
 		Button getActiveGroupsB = new Button("Active Groups");
 		Button getPopularGroupsB = new Button("Popular Groups");
-		groupsListVBox.getChildren().addAll(getPopularGroupsB, getActiveGroupsB, groupTitles);
+		groupsListVBox.getChildren().addAll(getActiveGroupsB, getPopularGroupsB, groupTitles);
 		groupTitles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		BorderPane bp = new BorderPane();
 		bp.setLeft(groupsListVBox);
-
 
 		getPopularGroupsB.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -324,8 +325,6 @@ public class Controller {
 			}
 		});
 
-
-
 		for(Group group : groups) {
 			groupTitles.getItems().add(group.getTitle());
 		}
@@ -338,8 +337,6 @@ public class Controller {
 		});
 
 		bp.setCenter(groupInfoVB);
-
-
 		mainFrame.setCenter(bp);
 	}
 	/*
@@ -428,38 +425,21 @@ public class Controller {
 					}
 				}		
 
-
 				Label questionsL = new Label("Questions");
 				Label answersL = new Label("Answers");
 				groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers);
-
 			}
 		});
-
 
 		btnAdd.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {		
-				/*
-				groupInfoVB.getChildren().clear();				
-				LocalDateTime dateCreated = LocalDateTime.now();
-				Question q = new Question("Title of Question", "Description of question", dateCreated);
-				sm.getMember(memberEmail).addQuestion(sm.getGroup(groupTitle), q, dateCreated);
-				for(Question question : sm.getGroup(groupTitle).getQuestions()) {
-					if(!questions.getItems().contains(question.getTitle())) {
-						questions.getItems().add(question.getTitle());
-					}
-				}
-				 */
 				createAddQuestionPane(sm.getMember(member), sm.getGroup(groupTitle));
-
 				BorderPane bp = new BorderPane();
 				bp.setCenter(questionFormVB);
-
 				mainFrame.setCenter(bp);
 			}
 		});
-
 
 		if (member == null) {
 			groupInfoVB.getChildren().addAll(groupL, questionL, questions, memberL, members);
@@ -467,21 +447,10 @@ public class Controller {
 			groupInfoVB.getChildren().addAll(groupL, questionL, questions);
 		}
 
-
-
 		if(member != null) {
 			groupInfoVB.getChildren().add(btnAdd);
 		}
-
-
-
 	}
-
-
-
-
-
-
 
 
 	private void createAddQuestionPane(Member member, Group group) {
@@ -512,13 +481,9 @@ public class Controller {
 			}
 
 		});
-
 		HBox titleHBox = new HBox();
 		titleHBox.getChildren().addAll(questionTitleL, questionTitleTF);
-
 		questionFormVB = new VBox(titleHBox, questionDescriptionL, questionDescriptionTA, btnSubmitQuestion);
-
-
 	}
 
 	private void save() {
@@ -530,6 +495,14 @@ public class Controller {
 		}
 	}
 
+	//createQuestionsScene method
+	private void createQuestionScene() {
+		System.out.println("a");
+	}
+	//createAnswersScene method
+	private void createAnswerScene() {
+		System.out.println("__");
+	}
 
 
 
