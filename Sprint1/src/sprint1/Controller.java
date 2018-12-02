@@ -259,7 +259,7 @@ public class Controller {
 						@Override
 						public void handle(MouseEvent event) {
 							groupInfoVB.getChildren().clear();
-							String groupTitle = memberGroupList.getSelectionModel().getSelectedItem();
+							String groupTitle = memberGroupList.getSelectionModel().getSelectedItem();/////////!!
 							createGroupPane(groupTitle, member);
 						}
 					});
@@ -285,9 +285,44 @@ public class Controller {
 	private void createGroupScene() {
 		groupInfoVB.getChildren().clear();
 		ListView<String> groupTitles = new ListView<String>();
+		VBox groupsListVBox = new VBox();///
+		
+		Button getActiveGroupsB = new Button("Active Groups");///////////////////////////////
+		Button getPopularGroupsB = new Button("Popular Groups");///
+		groupsListVBox.getChildren().addAll(getPopularGroupsB, getActiveGroupsB, groupTitles);
+		
 		groupTitles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		BorderPane bp = new BorderPane();
-		bp.setLeft(groupTitles);
+		
+		bp.setLeft(groupsListVBox);
+		
+		getPopularGroupsB.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				groupTitles.getItems().clear();
+				for (Group g: sm.getPopularGroups(sm.getGroups().size()) ) {
+					groupTitles.getItems().add(g.getTitle());
+				}
+				
+				
+			}
+		});
+		
+		getActiveGroupsB.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				groupTitles.getItems().clear();
+				for (Group g: sm.getActiveGroups(sm.getGroups().size()) ) {
+					groupTitles.getItems().add(g.getTitle());
+				}
+			}
+		});
+		
+		
+		
+		
+		
+		
 		for(Group group : groups) {
 			groupTitles.getItems().add(group.getTitle());
 		}
@@ -300,7 +335,8 @@ public class Controller {
 		});
 
 		bp.setCenter(groupInfoVB);
-		
+
+		/*
 		//!!!!!!!!!!!		
 		Label popularGroups = new Label("Most popular groups (most members):");
 		Label activeGroups = new Label("Most active groups (by number of posts):");
@@ -310,7 +346,7 @@ public class Controller {
 		test.getChildren().addAll(popularGroups, popularGroupTitles, activeGroups, activeGroupTitles);
 		bp.setRight(test);
 		//@@@@@@
-
+	*/
 		mainFrame.setCenter(bp);
 	}
 
@@ -319,26 +355,26 @@ public class Controller {
 		String memberEmail = member;
 		Label groupL = new Label(groupTitle);
 		Label questionL = new Label();
-		questionL.setText("Questions (" + sm.getGroup(groupTitle).getQuestions().size() + ")" );
+		questionL.setText("Questions (" + sm.getGroup(groupTitle).getQuestions().size() + ")" );////
 		ListView<String> questions = new ListView<String>();
-		questions.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);////
-		ArrayList<Question> questionsList = new ArrayList<Question>();////  
-		Label memberL = new Label();/////////
-		memberL.setText("Members (" + sm.getGroup(groupTitle).getNumOfMembers() + ")" );
-		ListView<String> members = new ListView<String>();//////////
+		questions.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		ArrayList<Question> questionsList = new ArrayList<Question>();///
+		Label memberL = new Label();
+		memberL.setText("Members (" + sm.getGroup(groupTitle).getNumOfMembers() + ")" );////
+		ListView<String> members = new ListView<String>();
 		Button btnAdd = new Button("Add Question");
 		for(Question question : sm.getGroup(groupTitle).getQuestions()) {
 			if(!questions.getItems().contains(question.getTitle())) {
-				questions.getItems().add(question.getTitle());
+				questions.getItems().add(question.getTitle());//question.getTitle() + "\n" + question.likes.size + " likes" 
 				questionsList.add(question);
 			}
 		}
-		for (Member m: sm.getGroup(groupTitle).getMembers()) {//////////
-			if(!members.getItems().contains(m.getScreenName())) {////////
+		for (Member m: sm.getGroup(groupTitle).getMembers()) {////
+			if(!members.getItems().contains(m.getScreenName())) {/////
 				members.getItems().add(m.getScreenName());///////////
 			}
 		}
-		
+
 		questions.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -348,18 +384,20 @@ public class Controller {
 				for (Question q: questionsList) {//////////
 					if (q.getTitle() == questionClicked) {
 						for (Answer a: q.getAnswers()) {
-						answers.getItems().add(a.getText());
+							answers.getItems().add(a.getText());
 						}
 					}
 				}		
+				
+				
 				Label questionsL = new Label("Questions");
 				Label answersL = new Label("Answers");
 				groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers);
-				
+
 			}
 		});
-		
-		
+
+
 		btnAdd.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {		
@@ -374,13 +412,21 @@ public class Controller {
 				}
 			}
 		});
+		
+		if (member == null) {
 		groupInfoVB.getChildren().addAll(groupL, questionL, questions, memberL, members);
+		} else if (member != null) {
+			groupInfoVB.getChildren().addAll(groupL, questionL, questions);
+		}
+		
+		
+		
 		if(member != null) {
 			groupInfoVB.getChildren().add(btnAdd);
 		}
-		//groupInfoVB.getChildren().addAll(memberL, members);
-		
-		
+
+
+
 	}
 
 	//Returns a ListView of the 7 most active groups
