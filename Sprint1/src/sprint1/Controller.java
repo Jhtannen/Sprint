@@ -338,9 +338,11 @@ public class Controller {
 		groupInfoVB.getChildren().clear();
 		String memberEmail = member;
 		Label groupL = new Label(groupTitle);
-		Label questionL = new Label();
-		questionL.setText("Questions (" + sm.getGroup(groupTitle).getQuestions().size() + ")" );
+		Label questionsL = new Label();
+		Label answersL = new Label("Answers (" + sm.getGroup(groupTitle).getAnswers().size() + ")" );//!
+		questionsL.setText("Questions (" + sm.getGroup(groupTitle).getQuestions().size() + ")" );
 		ListView<String> questions = new ListView<String>();
+		ListView<String> answers = new ListView<String>();
 		questions.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		ArrayList<Question> questionsList = new ArrayList<Question>();
 		Label memberL = new Label();
@@ -348,7 +350,7 @@ public class Controller {
 		ListView<String> members = new ListView<String>();
 		Button btnAdd = new Button("Add Question");
 		Button btnFilterQuestions = new Button("Recent Questions");//!
-
+		Button btnFilterAnswers = new Button("Recent Answers");//!
 		if (!filter) {////!
 			for(Question question : sm.getGroup(groupTitle).getQuestions()) {
 				if(!questions.getItems().contains(question.getTitle())) {
@@ -380,7 +382,7 @@ public class Controller {
 			public void handle(MouseEvent event) {
 				groupInfoVB.getChildren().clear();
 				String questionClicked = questions.getSelectionModel().getSelectedItem();
-				ListView<String> answers = new ListView<String>();
+				
 				for (Question q: questionsList) {
 					if (q.getTitle() == questionClicked) {
 						for (Answer a: q.getAnswers()) {
@@ -389,9 +391,9 @@ public class Controller {
 					}
 				}		
 
-				Label questionsL = new Label("Questions");
-				Label answersL = new Label("Answers");
-				groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers);
+				//Label questionsL = new Label("Questions");
+				//Label answersL = new Label("Answers");
+				groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers, btnFilterAnswers);//!
 			}
 		});
 
@@ -428,6 +430,8 @@ public class Controller {
 						    }
 						});*/
 						
+						
+						//Make sure input is an integer!
 						int filterNumber = Integer.parseInt(filterNumberTF.getText());
 						
 						if (filterNumber > questionsList.size() ) {
@@ -440,14 +444,57 @@ public class Controller {
 				});
 
 			}
+		});
+		
+		
+		btnFilterAnswers.setOnAction(new EventHandler<ActionEvent>() {//!!!
+			@Override
+			public void handle(ActionEvent event) {		
+				Label filterNumber = new Label("Number of Questions to filter: ");
+				TextField filterNumberTF = new TextField();
+				Button btnSubmitAnswerFilter = new Button("Submit");
+				HBox filterAnswersHBox = new HBox();
+				filterAnswersHBox.getChildren().addAll(filterNumber, filterNumberTF);
+				groupInfoVB.getChildren().addAll(filterAnswersHBox, btnSubmitAnswerFilter);////////////////4444
+				
+				
+				btnSubmitAnswerFilter.setOnAction(new EventHandler<ActionEvent>() {////!
+					@Override
+					public void handle(ActionEvent event) {			
+						//Make sure input is an integer!
+						int filterNumber = Integer.parseInt(filterNumberTF.getText());
+						if (filterNumber > questionsList.size() ) {
+							Label alert = new Label("Input must be an integer <= questionsList.size()!!");
+							groupInfoVB.getChildren().add(alert);
+						} else {
+							groupInfoVB.getChildren().clear();
+							ListView<Answer> filteredAnswers = new ListView<Answer>();
+							
+							for(Answer a : sm.getMember(member).getAnswers(sm.getGroup(groupTitle) ,filterNumber)) {
+								if(!answers.getItems().contains(a.getTitle())) {
+									answers.getItems().add(a.getTitle()); 
+									//questionsList.add(a);
+									System.out.println(a.getTitle());
+								}	
+							
+							}
+							groupInfoVB.getChildren().addAll(questionsL, questions,btnFilterQuestions, answersL, answers, btnFilterAnswers);
+						}	
+						
+					}
+				});
+
+			}
 		});//@
+		
+			
 
 
 
 		if (member == null) {
-			groupInfoVB.getChildren().addAll(groupL, questionL, questions, memberL, members);
+			groupInfoVB.getChildren().addAll(groupL, questionsL, questions, memberL, members);
 		} else if (member != null) {
-			groupInfoVB.getChildren().addAll(groupL, questionL, questions);
+			groupInfoVB.getChildren().addAll(groupL, questionsL, questions);
 		}
 
 		if(member != null) {
