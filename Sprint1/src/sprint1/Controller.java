@@ -417,7 +417,19 @@ public class Controller {
 				btnSubmit.setOnAction(new EventHandler<ActionEvent>() {////!
 					@Override
 					public void handle(ActionEvent event) {	
+						/*
+						filterNumberTF.textProperty().addListener(new ChangeListener<String>() {
+						    @Override
+						    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+						        String newValue) {
+						        if (!newValue.matches("\\d*")) {
+						        	filterNumberTF.setText(newValue.replaceAll("[^\\d]", ""));
+						        }
+						    }
+						});*/
+						
 						int filterNumber = Integer.parseInt(filterNumberTF.getText());
+						
 						if (filterNumber > questionsList.size() ) {
 							Label alert = new Label("Input must be an integer <= questionsList.size()!!");
 							groupInfoVB.getChildren().add(alert);
@@ -439,7 +451,9 @@ public class Controller {
 		}
 
 		if(member != null) {
-			groupInfoVB.getChildren().addAll(btnAdd, btnFilterQuestions);//!  //@
+			HBox buttonBox = new HBox();//!
+			buttonBox.getChildren().addAll(btnAdd, btnFilterQuestions);
+			groupInfoVB.getChildren().addAll(buttonBox);  //@
 		}
 	}
 
