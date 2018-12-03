@@ -27,7 +27,7 @@ public class SiteManager implements Serializable{
 				return false;
 			}
 		}
-		
+
 		memberList.add(newMember);
 		return true;
 	}
@@ -97,7 +97,7 @@ public class SiteManager implements Serializable{
 				return false;
 			}
 		}
-		
+
 		groupList.add(newGroup);
 		return true;
 	}

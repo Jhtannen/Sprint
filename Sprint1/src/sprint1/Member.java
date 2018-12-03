@@ -205,8 +205,8 @@ public class Member implements Serializable{
 
 	//Returns the n most recent answers asked by this 
 	//member in this group sorted on the order they were provided, most recent first.
-	List<Answer> getAnswers(Group group, int n) {
-		ArrayList<Answer> answersList = new ArrayList<Answer>();
+	List<Answer> getAnswers(Group group, int n) {//!
+		ArrayList<Answer> answersList = new ArrayList<Answer>();//!
 		for (Membership membership: memberships) {
 			if (membership.getGroup().equals(group) ) {
 				answersList.addAll( membership.getAnswers());
