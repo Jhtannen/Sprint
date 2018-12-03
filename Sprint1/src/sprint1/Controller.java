@@ -349,29 +349,23 @@ public class Controller {
 		Button btnAdd = new Button("Add Question");
 		Button btnFilterQuestions = new Button("Recent Questions");//!
 
-		if (!filter) {
-			System.out.println("No filter");
+		if (!filter) {////!
 			for(Question question : sm.getGroup(groupTitle).getQuestions()) {
 				if(!questions.getItems().contains(question.getTitle())) {
 					questions.getItems().add(question.getTitle()); 
 					questionsList.add(question);
 				}
 			}
-		} else {
-			System.out.println("Filtering " + filterNumber + " questions!");
-			questions.getItems().clear();
-			
+		} else {//!!!
+			questions.getItems().clear();		
 			for(Question question : sm.getMember(member).getQuestions(sm.getGroup(groupTitle) ,filterNumber)) {
 				if(!questions.getItems().contains(question.getTitle())) {
 					questions.getItems().add(question.getTitle()); 
 					questionsList.add(question);
-					//System.out.println(questionsList);
-					//System.out.println(questions.getItems());
 					System.out.println(question.getTitle());
 				}
 			}	
-
-		}
+		}//@@@@
 
 
 
@@ -387,7 +381,7 @@ public class Controller {
 				groupInfoVB.getChildren().clear();
 				String questionClicked = questions.getSelectionModel().getSelectedItem();
 				ListView<String> answers = new ListView<String>();
-				for (Question q: questionsList) {//////////
+				for (Question q: questionsList) {
 					if (q.getTitle() == questionClicked) {
 						for (Answer a: q.getAnswers()) {
 							answers.getItems().add(a.getText());
@@ -411,7 +405,7 @@ public class Controller {
 			}
 		});
 
-		btnFilterQuestions.setOnAction(new EventHandler<ActionEvent>() {////!
+		btnFilterQuestions.setOnAction(new EventHandler<ActionEvent>() {//!!!
 			@Override
 			public void handle(ActionEvent event) {		
 				Label filterNumber = new Label("Number of Questions to filter: ");
@@ -419,24 +413,19 @@ public class Controller {
 				Button btnSubmit = new Button("Submit");
 				HBox filterQuestionsHBox = new HBox();
 				filterQuestionsHBox.getChildren().addAll(filterNumber, filterNumberTF);
-
 				groupInfoVB.getChildren().addAll(filterQuestionsHBox, btnSubmit);
-
-
-
-
 				btnSubmit.setOnAction(new EventHandler<ActionEvent>() {////!
 					@Override
 					public void handle(ActionEvent event) {	
 						int filterNumber = Integer.parseInt(filterNumberTF.getText());
 						if (filterNumber > questionsList.size() ) {
-							Label alert = new Label("number must be <= questions list size!");
-							//groupInfoVB.getChildren().add(alert);
+							Label alert = new Label("Input must be an integer <= questionsList.size()!!");
+							groupInfoVB.getChildren().add(alert);
 						} else {
 							createGroupPane(groupTitle, member,  membersEmailList, true, filterNumber );
 						}
 					}
-				});//@
+				});
 
 			}
 		});//@
