@@ -49,6 +49,7 @@ public class Controller {
 	private File file = new File("SiteManager_File");
 	private List<Member> members;
 	private List<Group> groups;
+	ListView<String> membersEmailList = new ListView<String>();
 	protected VBox groupInfoVB = new VBox();
 	protected VBox questionFormVB = new VBox();
 
@@ -82,7 +83,7 @@ public class Controller {
 
 
 		pm = new PersistanceManager();
-		String[] siteOptions = {"Add Member", "Add Group", "Members", "Groups"};
+		String[] siteOptions = {"Add Group", "Members", "Groups"};
 		options.getItems().setAll(siteOptions);
 		options.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		optionInstructions.setEditable(false);
@@ -119,6 +120,7 @@ public class Controller {
 
 	private GridPane createAddMemberScene() {
 		mainFunction.getChildren().clear();
+		membersEmailList.getItems().clear();
 		Label emailL = new Label("Email");
 		TextField emailTF = new TextField();
 		Label firstNameL = new Label("First Name");
@@ -198,7 +200,7 @@ public class Controller {
 
 	private void createMembersScene(String member) {
 		mainFunction.getChildren().clear();
-		ListView<String> membersEmailList = new ListView<String>();
+		
 		BorderPane bp = new BorderPane();
 		bp.setLeft(membersEmailList);
 		bp.setCenter(createAddMemberScene());
@@ -211,7 +213,12 @@ public class Controller {
 		if(member != null) {
 			membersEmailList.getSelectionModel().select(member);
 		}
-		membersEmailList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		membersEmailList.setOnMouseClicked(membersEmailListHandler(bp));
+		mainFrame.setCenter(bp);
+	}
+	
+	private EventHandler<MouseEvent> membersEmailListHandler(BorderPane bp){
+		return (new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				try {
@@ -291,7 +298,6 @@ public class Controller {
 				}}
 		});
 
-		mainFrame.setCenter(bp);
 	}
 
 	private void createGroupScene() {
@@ -415,23 +421,12 @@ public class Controller {
 
 		btnAdd.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event) {		
-				/*
-				groupInfoVB.getChildren().clear();				
-				LocalDateTime dateCreated = LocalDateTime.now();
-				Question q = new Question("Title of Question", "Description of question", dateCreated);
-				sm.getMember(memberEmail).addQuestion(sm.getGroup(groupTitle), q, dateCreated);
-				for(Question question : sm.getGroup(groupTitle).getQuestions()) {
-					if(!questions.getItems().contains(question.getTitle())) {
-						questions.getItems().add(question.getTitle());
-					}
-				}
-				 */
+			public void handle(ActionEvent event) {
 				createAddQuestionPane(sm.getMember(member), sm.getGroup(groupTitle));
-
 				BorderPane bp = new BorderPane();
 				bp.setCenter(questionFormVB);
-
+				bp.setLeft(membersEmailList);
+				membersEmailList.setOnMouseClicked(membersEmailListHandler(bp));
 				mainFrame.setCenter(bp);
 			}
 		});
@@ -461,6 +456,7 @@ public class Controller {
 
 
 	private void createAddQuestionPane(Member member, Group group) {
+		Label addQuestionL = new Label("Add Question");
 		Label questionTitleL = new Label("Title");
 		TextField questionTitleTF = new TextField();
 		Label questionDescriptionL = new Label("Description");
@@ -493,9 +489,9 @@ public class Controller {
 		HBox titleHBox = new HBox();
 		titleHBox.getChildren().addAll(questionTitleL, questionTitleTF);
 
-		questionFormVB = new VBox(titleHBox, questionDescriptionL, questionDescriptionTA, btnSubmitQuestion);
-
-
+		 questionFormVB = new VBox(addQuestionL,titleHBox, questionDescriptionL, questionDescriptionTA, btnSubmitQuestion);
+		
+		
 	}
 
 	protected void save() {

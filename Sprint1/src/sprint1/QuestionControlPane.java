@@ -29,7 +29,9 @@ public class QuestionControlPane {
 	public VBox createControlPane() {
 		VBox controlPane = new VBox();
 		HBox controls = new HBox();
-		Label questionL = new Label("Question\nTitle: " + question.getTitle() + "\nDescription: " + question.getText());
+		Label questionL = new Label("Question\nTitle: " + question.getTitle() + "\nAuthor: " + question.getAuthor().getFirstName() + 
+				" " +question.getAuthor().getLastName() + "\nDescription: " + question.getText());
+		questionL.setWrapText(true);
 		Button btnAdd = new Button("Add Answer");
 		Button btnComment = new Button("Comment on Question");
 		Button btnLike =  new Button("Like Post");
