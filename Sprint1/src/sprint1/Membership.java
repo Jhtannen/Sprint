@@ -15,7 +15,7 @@ class Membership implements Serializable{
 	private List<Answer> answers = new ArrayList<>();
 
 	void addQuestion(Question question) {
-		this.questions.add(question);		
+		this.questions.add(question);	
 	}
 
 	void addAnswer(Answer answer) {

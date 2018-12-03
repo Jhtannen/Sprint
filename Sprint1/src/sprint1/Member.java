@@ -196,7 +196,6 @@ public class Member implements Serializable{
 				questionsList.addAll( membership.getQuestions());
 			}
 		}
-
 		for (int i = 0; i < questionsList.size() - n; i++) {
 			questionsList.remove(i);
 		}
