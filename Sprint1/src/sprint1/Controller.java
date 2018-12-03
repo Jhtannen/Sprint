@@ -46,7 +46,7 @@ import javafx.scene.web.WebView;
 public class Controller {
 	private SiteManager sm;
 	private PersistanceManager pm;
-	private File file = new File("SiteManger_File");
+	private File file = new File("SiteManager_File");
 	private List<Member> members;
 	private List<Group> groups;
 	protected VBox groupInfoVB = new VBox();
@@ -82,7 +82,7 @@ public class Controller {
 
 
 		pm = new PersistanceManager();
-		String[] siteOptions = {"Add Member", "Add Group", "Members", "Groups", "Test"};
+		String[] siteOptions = {"Add Member", "Add Group", "Members", "Groups"};
 		options.getItems().setAll(siteOptions);
 		options.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		optionInstructions.setEditable(false);
@@ -117,7 +117,7 @@ public class Controller {
 
 
 
-	private void createAddMemberScene() {
+	private GridPane createAddMemberScene() {
 		mainFunction.getChildren().clear();
 		Label emailL = new Label("Email");
 		TextField emailTF = new TextField();
@@ -130,6 +130,7 @@ public class Controller {
 		Button btnSave = new Button();
 		btnSave.setText("Save");
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
+			
 			@Override
 			public void handle(ActionEvent event) {
 				if(!emailTF.getText().isEmpty() && !firstNameTF.getText().isEmpty() && !lastNameTF.getText().isEmpty()
@@ -158,6 +159,7 @@ public class Controller {
 		mainFunction.add(screenNameL, 0, 3);
 		mainFunction.add(screenNameTF, 1, 3);
 		mainFunction.add(btnSave, 2, 4);
+		return mainFunction;
 	}
 
 	private void createAddGroupScene() {
@@ -166,6 +168,7 @@ public class Controller {
 		TextField titleTF = new TextField();
 		Label descriptionL = new Label("Description");
 		TextArea descriptionTA = new TextArea();
+		descriptionTA.setWrapText(true);
 		Button btnSave = new Button();
 		btnSave.setText("Save");
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
@@ -198,8 +201,9 @@ public class Controller {
 		ListView<String> membersEmailList = new ListView<String>();
 		BorderPane bp = new BorderPane();
 		bp.setLeft(membersEmailList);
+		bp.setCenter(createAddMemberScene());
 
-		for(Member m : members) {
+		for(Member m : sm.getMembers()) {
 			membersEmailList.getItems().add(m.getEmailAddress()); 
 		}
 
@@ -378,9 +382,9 @@ public class Controller {
 						if(questions.getSelectionModel().getSelectedItem().equals(q.getTitle())) {
 							question = q;
 						}
-					}	
-					AnswerFormPane ap = new AnswerFormPane(sm.getMember(member), sm.getGroup(groupTitle), question);
-					groupInfoVB.getChildren().add(ap.createAnswerFormPane());
+					}
+					QuestionControlPane qp = new QuestionControlPane(sm.getMember(memberEmail), sm.getGroup(groupTitle), question, pm, sm);
+					groupInfoVB.getChildren().add(qp.createControlPane());
 				}
 			});
 		} else {
@@ -461,6 +465,7 @@ public class Controller {
 		TextField questionTitleTF = new TextField();
 		Label questionDescriptionL = new Label("Description");
 		TextArea questionDescriptionTA = new TextArea();
+		questionDescriptionTA.setWrapText(true);
 		Button btnSubmitQuestion = new Button("Submit");
 		btnSubmitQuestion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
