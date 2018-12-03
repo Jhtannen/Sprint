@@ -30,6 +30,10 @@ public class Answer extends Post implements Serializable  {
 		}
 		return result;	
 	}
+	
+	public String getTitle() {//!!
+		return this.title;
+	}//@@
 
 	public String toString() {
 		String result = "Answer: " + text + " for question " + question.getTitle();
