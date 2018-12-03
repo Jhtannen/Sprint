@@ -82,7 +82,7 @@ public class Controller {
 
 
 		pm = new PersistanceManager();
-		String[] siteOptions = {"Add Member", "Add Group", "Members", "Groups", "Questions", "Answers"};
+		String[] siteOptions = {"Add Member", "Add Group", "Members", "Groups", "Questions", "Answers"};//! //@@
 		options.getItems().setAll(siteOptions);
 		options.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		optionInstructions.setEditable(false);
@@ -107,15 +107,11 @@ public class Controller {
 			createMembersScene(null);
 		} else if(option.equals("Groups")) {
 			createGroupScene();
-		} else if(option.equals("Groups")) {
-			createGroupScene(); 		
-
-		}else if(option.equals("Answers")) {
-			createAnswerScene();
-		} else if (option.equals("Questions")) {
-			createQuestionScene();
-		}	
-		else {
+		} else if(option.equals("Questions")) {//!
+			createQuestionScene(); 			
+		} else if(option.equals("Answers")) {
+			createAnswerScene(); 			   //@@
+		} else {
 			mainFunction.getChildren().clear();
 		}
 	}
@@ -339,52 +335,6 @@ public class Controller {
 		bp.setCenter(groupInfoVB);
 		mainFrame.setCenter(bp);
 	}
-	/*
-	private void createGroupPane(String groupTitle, String member, ListView<String> membersEmailList) {
-		groupInfoVB.getChildren().clear();
-		String memberEmail = member;
-		Label groupL = new Label(groupTitle);
-		Label questionL = new Label();
-		questionL.setText("Questions (" + sm.getGroup(groupTitle).getQuestions().size() + ")" );
-		ListView<String> questions = new ListView<String>();
-		questions.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		ArrayList<Question> questionsList = new ArrayList<Question>();
-		Label memberL = new Label();
-		memberL.setText("Members (" + sm.getGroup(groupTitle).getNumOfMembers() + ")" );
-		ListView<String> members = new ListView<String>();
-
-		Button btnAdd = new Button("Add Question");
-
-		btnAdd.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				System.out.println("Creating Add Question Form for: "+ member + " : " + groupTitle);
-				createAddQuestionPane(sm.getMember(member), sm.getGroup(groupTitle));
-				BorderPane bp = new BorderPane();
-				bp.setCenter(questionFormVB);
-				bp.setLeft(membersEmailList);
-				membersEmailList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-				membersEmailList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-					@Override
-					public void handle(MouseEvent event) {
-						createMembersScene(membersEmailList.getSelectionModel().getSelectedItem());
-					}
-				});
-				mainFrame.setCenter(bp);
-
-			}
-		});
-
-		groupInfoVB.getChildren().addAll(groupL, questionL, questions);
-		if(member != null) {
-			groupInfoVB.getChildren().add(btnAdd);
-		}
-
-
-	}*/
-
-
 
 	private void createGroupPane(String groupTitle, String member, ListView<String> membersEmailList) {
 		groupInfoVB.getChildren().clear();
@@ -495,14 +445,19 @@ public class Controller {
 		}
 	}
 
+
+
+
 	//createQuestionsScene method
 	private void createQuestionScene() {
 		System.out.println("a");
 	}
+	
 	//createAnswersScene method
 	private void createAnswerScene() {
 		System.out.println("__");
 	}
+
 
 
 
