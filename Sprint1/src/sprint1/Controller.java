@@ -50,6 +50,8 @@ public class Controller {
 	private List<Member> members;
 	private List<Group> groups;
 	
+	private Question clickedQuestion = new Question(null,null,null);//
+	
 	ListView<String> membersEmailList = new ListView<String>();//M
 	
 	
@@ -437,6 +439,7 @@ public class Controller {
 
 	private void createGroupPane(String groupTitle, String member, ListView<String> membersEmailList, boolean filter, int filterNumber) {
 		groupInfoVB.getChildren().clear();
+		//Question clickedQuestion = new Question(null,null,null);//
 		String memberEmail = member;
 		Label groupL = new Label(groupTitle);
 		Label questionsL = new Label();
@@ -506,6 +509,7 @@ public class Controller {
 					String questionClicked = questions.getSelectionModel().getSelectedItem();
 					for (Question q: questionsList) {//////////
 						if (q.getTitle() == questionClicked) {
+							clickedQuestion = q;
 							for (Answer a: q.getAnswers()) {
 								answers.getItems().add(a.getText());
 								answersList.add(a);
@@ -619,18 +623,26 @@ public class Controller {
 						} else {
 							//groupInfoVB.getChildren().clear();
 							ListView<String> filteredAnswers = new ListView<String>();
-							for(Answer a : sm.getMember(member).getAnswers(sm.getGroup(groupTitle) ,filterNumber)) {
-								
+							//for(Answer a : sm.getMember(member).getAnswers(sm.getGroup(groupTitle) ,filterNumber)) {
 							
-							filteredAnswers.getItems().add(a.getTitle());
+							System.out.println();
+							for (int i = 1; i <= filterNumber; i++)  {
+								filteredAnswers.getItems().add(clickedQuestion.getAnswers().get(clickedQuestion.getAnswers().size() - i).getText());
+							}
+							
+							//filteredAnswers.getItems().add(a.getText());
+							
+							
+							
 							//if(!answers.getItems().contains(a.getTitle())) {
 									//answers.getItems().add(a.getTitle());
 									//answersList.add(a);
 									//System.out.println(a.getTitle());
 								//}	
 
-							}
+							//}
 							answers.setMaxHeight(100);
+							groupInfoVB.getChildren().clear();
 							groupInfoVB.getChildren().addAll(questionsL, questions,btnFilterQuestions, answersL, filteredAnswers, btnFilterAnswers);
 						}	
 
