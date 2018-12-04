@@ -6,8 +6,6 @@ import java.util.List;
 
 
 public class Answer extends Post implements Serializable  {
-
-	private String title;
 	private Question question;
 
 	public Answer (Question question, String text, LocalDateTime dateCreated) { 
@@ -31,9 +29,6 @@ public class Answer extends Post implements Serializable  {
 		return result;	
 	}
 	
-	public String getTitle() {//!!
-		return this.title;
-	}//@@
 
 	public String toString() {
 		String result = "Answer: " + text + " for question " + question.getTitle();
