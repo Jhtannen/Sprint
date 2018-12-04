@@ -410,6 +410,7 @@ public class Controller {
 
 					Label questionsL = new Label("Questions");
 					Label answersL = new Label("Answers");
+					Button btn = new Button("BTN");
 					groupInfoVB.getChildren().clear();
 					groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers);
 				}

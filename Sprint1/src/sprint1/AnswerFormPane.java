@@ -31,6 +31,7 @@ public class AnswerFormPane {
 		Label answerL = new Label("Add Answer to \n"+ question.getTitle());
 		Label questionDescriptionL = new Label(question.getText());
 		TextArea answerTA = new TextArea();
+		
 		answerTA.setWrapText(true);
 		answerTA.setMaxWidth(500.0);
 		Button btnSubmit = new Button("Submit");
