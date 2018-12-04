@@ -116,6 +116,7 @@ public class SiteManager implements Serializable{
 		return group;
 	}
 
+	//Returns a list of all Groups
 	public List<Group> getGroups() {
 		if (groupList.size() <= 1) {
 			return groupList;
@@ -128,6 +129,7 @@ public class SiteManager implements Serializable{
 		});
 		return groupList;
 	}
+	
 	// Returns a list of all Groups where text (partially) matches any of title or
 	// description across all Groups, sorted by title
 	public List<Group> getGroups(String text) {
@@ -198,10 +200,10 @@ public class SiteManager implements Serializable{
 		Collections.reverse(activeGroups);
 		return activeGroups.subList(0, n);
 	}
+	
 	// Returns a list of the n Members that have the most questions and answers
 	// across all the groups they are a member of, sorted descending on the total
 	// questions and answers
-
 	public List<Member> getActiveMembers(int n) {
 		List<Member> activeMembers = new ArrayList<>(this.getMembers());			
 		Collections.sort(activeMembers, new Comparator<Member>() {
@@ -225,6 +227,5 @@ public class SiteManager implements Serializable{
 		});
 		return activeMembers.subList(0, n);
 	}
-
 }
 

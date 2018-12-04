@@ -1,7 +1,5 @@
 package sprint1;
 
-
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -23,7 +21,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("site.fxml"));
 		primaryStage.setTitle("Site Manager");
-		primaryStage.setScene(new Scene(root, 900, 800));//Changed 500 to 800
+		primaryStage.setScene(new Scene(root, 900, 800));
 		primaryStage.show();
 	}
 

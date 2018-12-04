@@ -10,7 +10,8 @@ class PersistanceManager {
    
    public PersistanceManager() {
    }
-   //Static method to save the entire system. Hint: a binary file is the easiest way to do this
+   
+   //Saves the entire system.
    public static void save(SiteManager sm, FileOutputStream file) {
       try {
          ObjectOutputStream binFile = new ObjectOutputStream(file);
@@ -23,7 +24,7 @@ class PersistanceManager {
       }      
    }
    
-   //Static method to read the system from file and return a SiteManager object
+   //Reads the system from file and return a SiteManager object
    public static SiteManager read (FileInputStream file) {
 	   SiteManager savedSiteManager = null;
 	   try {

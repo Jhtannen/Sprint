@@ -29,7 +29,6 @@ public class Answer extends Post implements Serializable  {
 		return result;	
 	}
 	
-
 	public String toString() {
 		String result = "Answer: " + text + " for question " + question.getTitle();
 		result += "\n" + getLikes();

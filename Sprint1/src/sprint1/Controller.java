@@ -48,7 +48,7 @@ public class Controller {
 	private List<Member> members;
 	private List<Group> groups;
 	private Question clickedQuestion = new Question(null,null,null);
-	ListView<String> membersEmailList = new ListView<String>();///Should this be private?
+	private ListView<String> membersEmailList = new ListView<String>();
 	protected VBox groupInfoVB = new VBox();
 	protected VBox questionFormVB = new VBox();
 
@@ -70,7 +70,7 @@ public class Controller {
 				members = sm.getMembers();
 				groups = sm.getGroups();
 			} catch(Exception e) {
-				System.out.println(e + "Erro Couldnt Load SiteManager");
+				System.out.println(e + "Error Couldn't Load SiteManager");
 			}
 		} else {
 			sm = new SiteManager();
@@ -89,7 +89,6 @@ public class Controller {
 	public void handleClickListView() {
 		String option = options.getSelectionModel().getSelectedItem();
 		optionInstructions.setText("You've Choosen to: " + option);
-
 		if(option == null){
 			optionInstructions.setText("");
 		}else if(option.equals("Add Member")) {
@@ -107,7 +106,6 @@ public class Controller {
 			mainFunction.getChildren().clear();
 		}
 	}
-
 
 	private GridPane createAddMemberScene() {
 		mainFunction.getChildren().clear();
@@ -131,7 +129,7 @@ public class Controller {
 					if(!sm.addMember(firstNameTF.getText(), lastNameTF.getText(), screenNameTF.getText(), emailTF.getText(), dateCreated)) {
 						optionInstructions.setText("  ERROR - Member with this email already exists");
 					} else {
-						optionInstructions.setText("  SUCSESS - Member was added");
+						optionInstructions.setText("  SUCCESS - Member was added");
 					}
 					save();
 
@@ -151,9 +149,8 @@ public class Controller {
 		mainFunction.add(screenNameL, 0, 3);
 		mainFunction.add(screenNameTF, 1, 3);
 		mainFunction.add(btnSave, 2, 4);
-		return mainFunction;//M
+		return mainFunction;
 	}
-
 	
 	private void createAddGroupScene() {
 		mainFunction.getChildren().clear();
@@ -161,7 +158,7 @@ public class Controller {
 		TextField titleTF = new TextField();
 		Label descriptionL = new Label("Description");
 		TextArea descriptionTA = new TextArea();
-		descriptionTA.setWrapText(true);//M
+		descriptionTA.setWrapText(true);
 		Button btnSave = new Button();
 		btnSave.setText("Save");
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
@@ -172,7 +169,7 @@ public class Controller {
 					if(!sm.addGroup(titleTF.getText(), descriptionTA.getText(), dateCreated)) {
 						optionInstructions.setText("  ERROR - Group already exists");
 					} else {
-						optionInstructions.setText("  SUCSESS - Group added");
+						optionInstructions.setText("  SUCCESS - Group added");
 						save();
 					}
 				} else {
@@ -188,7 +185,6 @@ public class Controller {
 		mainFunction.add(descriptionTA, 1, 1);
 		mainFunction.add(btnSave, 2, 4);
 	}
-
 	
 	private void createMembersScene(String member) {
 		mainFunction.getChildren().clear();
@@ -261,7 +257,7 @@ public class Controller {
 						public void handle(MouseEvent event) {
 							groupInfoVB.getChildren().clear();
 							String groupTitle = memberGroupList.getSelectionModel().getSelectedItem();
-							createGroupPane(groupTitle, member, membersEmailList, false, 0);/////
+							createGroupPane(groupTitle, member, membersEmailList, false, 0);
 						}
 					});
 					optionInstructions.setText("You've Choosen to: " + member);
@@ -279,7 +275,6 @@ public class Controller {
 
 	}
 
-
 	private void createGroupScene() {
 		groupInfoVB.getChildren().clear();
 		ListView<String> groupTitles = new ListView<String>();
@@ -290,7 +285,6 @@ public class Controller {
 		groupTitles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		BorderPane bp = new BorderPane();
 		bp.setLeft(groupsListVBox);
-
 		getPopularGroupsB.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -316,6 +310,7 @@ public class Controller {
 		for(Group group : groups) {
 			groupTitles.getItems().add(group.getTitle());
 		}
+		
 		groupTitles.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -404,7 +399,7 @@ public class Controller {
 					Label questionsL = new Label("Questions");
 					Label answersL = new Label("Answers");
 					groupInfoVB.getChildren().clear();
-					groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers, btnFilterAnswers);//
+					groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers, btnFilterAnswers);
 				}
 			});
 		}
@@ -415,8 +410,8 @@ public class Controller {
 				createAddQuestionPane(sm.getMember(member), sm.getGroup(groupTitle));
 				BorderPane bp = new BorderPane();
 				bp.setCenter(questionFormVB);
-				bp.setLeft(membersEmailList);//M
-				membersEmailList.setOnMouseClicked(membersEmailListHandler(bp));//M
+				bp.setLeft(membersEmailList);
+				membersEmailList.setOnMouseClicked(membersEmailListHandler(bp));
 				mainFrame.setCenter(bp);
 			}
 		});
@@ -486,12 +481,11 @@ public class Controller {
 			groupInfoVB.getChildren().addAll(groupL, questionsL, questions);
 		}
 		if(member != null) {
-			HBox buttonBox = new HBox();//!  difference (I put two buttons in an Hbox)
+			HBox buttonBox = new HBox();
 			buttonBox.getChildren().addAll(btnAdd, btnFilterQuestions);
-			groupInfoVB.getChildren().addAll(buttonBox);  //@
+			groupInfoVB.getChildren().addAll(buttonBox); 
 		}
 	}
-
 
 	private void createAddQuestionPane(Member member, Group group) {
 		Label addQuestionL = new Label("Add Question");
@@ -524,11 +518,10 @@ public class Controller {
 		});
 		HBox titleHBox = new HBox();
 		titleHBox.getChildren().addAll(questionTitleL, questionTitleTF);
-		questionFormVB = new VBox(addQuestionL,titleHBox, questionDescriptionL, questionDescriptionTA, btnSubmitQuestion);//M
+		questionFormVB = new VBox(addQuestionL,titleHBox, questionDescriptionL, questionDescriptionTA, btnSubmitQuestion);
 	}
 
-	
-	private void save() {
+		private void save() {
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			pm.save(sm, fos);

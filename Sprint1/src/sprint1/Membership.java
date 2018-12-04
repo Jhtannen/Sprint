@@ -24,12 +24,10 @@ class Membership implements Serializable{
 		addPoints(10);
 	}
 
-	//constructor method
 	public Membership(LocalDateTime dateJoined, Member member, Group group) {
 		this.dateJoined = dateJoined;
 		this.member = member;
 		this.group = group;
-		//this.points = points; 
 	}
 
 	//returns the date the member joined the group
