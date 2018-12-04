@@ -15,11 +15,13 @@ class Membership implements Serializable{
 	private List<Answer> answers = new ArrayList<>();
 
 	void addQuestion(Question question) {
-		this.questions.add(question);	
+		this.questions.add(question);
+		addPoints(10); 
 	}
 
 	void addAnswer(Answer answer) {
 		this.answers.add(answer);
+		addPoints(10);
 	}
 
 	//constructor method
