@@ -1,6 +1,5 @@
 package sprint1;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -42,24 +41,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
-
 public class Controller {
 	private SiteManager sm;
 	private PersistanceManager pm;
 	private File file = new File("SiteManager_File");
 	private List<Member> members;
 	private List<Group> groups;
-	
-	private Question clickedQuestion = new Question(null,null,null);//
-	
-	ListView<String> membersEmailList = new ListView<String>();//M
-	
-	
+	private Question clickedQuestion = new Question(null,null,null);
+	ListView<String> membersEmailList = new ListView<String>();///Should this be private?
 	protected VBox groupInfoVB = new VBox();
 	protected VBox questionFormVB = new VBox();
-	
-
-
 
 	@FXML
 	private ListView<String> options;
@@ -69,7 +60,6 @@ public class Controller {
 	private BorderPane mainFrame;
 	@FXML
 	private GridPane mainFunction;
-
 
 
 	public void initialize() {
@@ -87,8 +77,6 @@ public class Controller {
 			members = new ArrayList<Member>();
 			groups = new ArrayList<Group>();
 		}
-
-
 		pm = new PersistanceManager();
 		String[] siteOptions = { "Add Group", "Members", "Groups"};
 		options.getItems().setAll(siteOptions);
@@ -121,10 +109,9 @@ public class Controller {
 	}
 
 
-
 	private GridPane createAddMemberScene() {
 		mainFunction.getChildren().clear();
-		membersEmailList.getItems().clear();//M
+		membersEmailList.getItems().clear();
 		Label emailL = new Label("Email");
 		TextField emailTF = new TextField();
 		Label firstNameL = new Label("First Name");
@@ -167,6 +154,7 @@ public class Controller {
 		return mainFunction;//M
 	}
 
+	
 	private void createAddGroupScene() {
 		mainFunction.getChildren().clear();
 		Label titleL = new Label("Title");
@@ -201,15 +189,12 @@ public class Controller {
 		mainFunction.add(btnSave, 2, 4);
 	}
 
+	
 	private void createMembersScene(String member) {
 		mainFunction.getChildren().clear();
-	
 		BorderPane bp = new BorderPane();
 		bp.setLeft(membersEmailList);
-		
-		bp.setCenter(createAddMemberScene());//M
-		
-
+		bp.setCenter(createAddMemberScene());
 		for(Member m : members) {
 			membersEmailList.getItems().add(m.getEmailAddress()); 
 		}
@@ -218,96 +203,14 @@ public class Controller {
 		if(member != null) {
 			membersEmailList.getSelectionModel().select(member);
 		}
-		
+
 		membersEmailList.setOnMouseClicked(membersEmailListHandler( bp));
 		mainFrame.setCenter(bp);
 	}
-	
-		private EventHandler<MouseEvent> membersEmailListHandler(BorderPane bp){
-			return (new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					try {
 
-						groupInfoVB.getChildren().clear();
-						ComboBox<String> groupCB = new ComboBox<String>();
-						ListView<String> memberGroupList = new ListView<String>();
-						List<String> thisMembersGroups = new ArrayList<String>();
-						VBox memberInfoVB = new VBox();
-						HBox labelAndCombo = new HBox();
-						Label memberNameL = new Label();
-						Label groupL = new Label("Groups");
-						Label memberDateCreatedL = new Label();
-						ScrollPane sp = new ScrollPane();
-
-						Label groupNameL = new Label();
-						groupCB.setPromptText("Join Group");
-						String member = membersEmailList.getSelectionModel().getSelectedItem();
-
-						for(Group group : sm.getMember(member).getGroups()) {
-							if(!memberGroupList.getItems().contains(group.getTitle())) {
-								memberGroupList.getItems().add(group.getTitle());
-								thisMembersGroups.add(group.getTitle());
-							}
-
-						}
-
-						for(Group group : sm.getGroups()) {
-							if(!thisMembersGroups.contains(group.getTitle())) {
-								groupCB.getItems().add(group.getTitle());
-							}
-						}
-
-						groupCB.valueProperty().addListener(new ChangeListener<String>() {
-							@Override
-							public void changed(ObservableValue<? extends String> observable, String oldValue,
-									String newValue) {
-								LocalDateTime date = LocalDateTime.now();
-								System.out.println(newValue);
-								sm.getMember(membersEmailList.getSelectionModel().getSelectedItem()).joinGroup(sm.getGroup(newValue), date);
-								for(Group group : sm.getMember(member).getGroups()) {
-									if(!memberGroupList.getItems().contains(group.getTitle())) {
-										memberGroupList.getItems().add(group.getTitle());
-										thisMembersGroups.add(group.getTitle());
-									}
-
-								}
-
-								save();
-							}
-
-						});
-
-						memberGroupList.setMaxHeight(100.0);
-						memberGroupList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-							@Override
-							public void handle(MouseEvent event) {
-								groupInfoVB.getChildren().clear();
-								String groupTitle = memberGroupList.getSelectionModel().getSelectedItem();
-								createGroupPane(groupTitle, member, membersEmailList, false, 0);/////
-							}
-						});
-
-
-
-
-						optionInstructions.setText("You've Choosen to: " + member);
-						String name = sm.getMember(member).getFirstName() + " " + sm.getMember(member).getLastName();
-						memberNameL.setText(name);
-						memberDateCreatedL.setText("Added: " +  sm.getMember(member).getDateCreated().toString());
-						labelAndCombo.getChildren().addAll(memberGroupList, groupCB);
-						memberInfoVB.getChildren().addAll(memberNameL, memberDateCreatedL, groupL, labelAndCombo, groupInfoVB);
-						sp.setContent(memberInfoVB);
-						bp.setCenter(sp);
-					}catch(Exception e) {
-						System.out.println(e);
-					}}
-			});
-
-		}//{
-			//CHANGE this
-		//}
-		/*	@Override
+	private EventHandler<MouseEvent> membersEmailListHandler(BorderPane bp){
+		return (new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent event) {
 				try {
 
@@ -321,11 +224,9 @@ public class Controller {
 					Label groupL = new Label("Groups");
 					Label memberDateCreatedL = new Label();
 					ScrollPane sp = new ScrollPane();
-
 					Label groupNameL = new Label();
 					groupCB.setPromptText("Join Group");
 					String member = membersEmailList.getSelectionModel().getSelectedItem();
-
 					for(Group group : sm.getMember(member).getGroups()) {
 						if(!memberGroupList.getItems().contains(group.getTitle())) {
 							memberGroupList.getItems().add(group.getTitle());
@@ -333,13 +234,11 @@ public class Controller {
 						}
 
 					}
-
 					for(Group group : sm.getGroups()) {
 						if(!thisMembersGroups.contains(group.getTitle())) {
 							groupCB.getItems().add(group.getTitle());
 						}
 					}
-
 					groupCB.valueProperty().addListener(new ChangeListener<String>() {
 						@Override
 						public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -352,24 +251,19 @@ public class Controller {
 									memberGroupList.getItems().add(group.getTitle());
 									thisMembersGroups.add(group.getTitle());
 								}
-
 							}
-
 							save();
 						}
-
 					});
-
 					memberGroupList.setMaxHeight(100.0);
 					memberGroupList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 						@Override
 						public void handle(MouseEvent event) {
 							groupInfoVB.getChildren().clear();
 							String groupTitle = memberGroupList.getSelectionModel().getSelectedItem();
-							createGroupPane(groupTitle, member, membersEmailList, false, 0);////!
+							createGroupPane(groupTitle, member, membersEmailList, false, 0);/////
 						}
 					});
-
 					optionInstructions.setText("You've Choosen to: " + member);
 					String name = sm.getMember(member).getFirstName() + " " + sm.getMember(member).getLastName();
 					memberNameL.setText(name);
@@ -383,11 +277,8 @@ public class Controller {
 				}}
 		});
 
-		mainFrame.setCenter(bp);//M deleted this
-	*/
-			
-		
-		
+	}
+
 
 	private void createGroupScene() {
 		groupInfoVB.getChildren().clear();
@@ -432,40 +323,37 @@ public class Controller {
 				createGroupPane(groupTitle, null, null, false, 0);////!
 			}
 		});
-
 		bp.setCenter(groupInfoVB);
 		mainFrame.setCenter(bp);
 	}
 
 	private void createGroupPane(String groupTitle, String member, ListView<String> membersEmailList, boolean filter, int filterNumber) {
 		groupInfoVB.getChildren().clear();
-		//Question clickedQuestion = new Question(null,null,null);//
 		String memberEmail = member;
 		Label groupL = new Label(groupTitle);
 		Label questionsL = new Label();
-		Label answersL = new Label("Answers (" + sm.getGroup(groupTitle).getAnswers().size() + ")" );//!
+		Label answersL = new Label("Answers (" + sm.getGroup(groupTitle).getAnswers().size() + ")" );
 		questionsL.setText("Questions (" + sm.getGroup(groupTitle).getQuestions().size() + ")" );
 		ListView<String> questions = new ListView<String>();
-		ListView<String> answers = new ListView<String>();//!
+		ListView<String> answers = new ListView<String>();
 		questions.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		answers.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);//!
+		answers.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		ArrayList<Question> questionsList = new ArrayList<Question>();
-		ArrayList<Answer> answersList = new ArrayList<Answer>();//!
+		ArrayList<Answer> answersList = new ArrayList<Answer>();
 		Label memberL = new Label();
 		memberL.setText("Members (" + sm.getGroup(groupTitle).getNumOfMembers() + ")" );
 		ListView<String> members = new ListView<String>();
 		Button btnAdd = new Button("Add Question");
-		Button btnFilterQuestions = new Button("Recent Questions");//!
-		Button btnFilterAnswers = new Button("Recent Answers");//!
-		///Difference 
-		if (!filter) {////!
+		Button btnFilterQuestions = new Button("Recent Questions");
+		Button btnFilterAnswers = new Button("Recent Answers");
+		if (!filter) {
 			for(Question question : sm.getGroup(groupTitle).getQuestions()) {
 				if(!questions.getItems().contains(question.getTitle())) {
 					questions.getItems().add(question.getTitle()); 
 					questionsList.add(question);
 				}
 			}
-		} else {//!!!
+		} else {
 			questions.getItems().clear();		
 			for(Question question : sm.getMember(member).getQuestions(sm.getGroup(groupTitle) ,filterNumber)) {
 				if(!questions.getItems().contains(question.getTitle())) {
@@ -474,17 +362,14 @@ public class Controller {
 					System.out.println(question.getTitle());
 				}
 			}	
-		}//@@@@
-
-
+		}
 
 		for (Member m: sm.getGroup(groupTitle).getMembers()) {
 			if(!members.getItems().contains(m.getScreenName())) {
 				members.getItems().add(m.getScreenName());
 			}
 		}
-		
-		//Matts code begins here:
+
 		if(member != null) {
 			questions.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
@@ -500,53 +385,29 @@ public class Controller {
 					groupInfoVB.getChildren().add(qp.createControlPane());
 				}
 			});
-			
+
 		} else {
 			questions.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
 					ListView<String> answers = new ListView<String>();
 					String questionClicked = questions.getSelectionModel().getSelectedItem();
-					for (Question q: questionsList) {//////////
+					for (Question q: questionsList) {
 						if (q.getTitle() == questionClicked) {
 							clickedQuestion = q;
 							for (Answer a: q.getAnswers()) {
 								answers.getItems().add(a.getText());
 								answersList.add(a);
 							}
-					 }
+						}
 					}		
-
-
 					Label questionsL = new Label("Questions");
 					Label answersL = new Label("Answers");
 					groupInfoVB.getChildren().clear();
 					groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers, btnFilterAnswers);//
 				}
-				
 			});
-		}//end of matt's code!!!
-		
-		
-		/*   MyCode 
-		questions.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				groupInfoVB.getChildren().clear();
-				String questionClicked = questions.getSelectionModel().getSelectedItem();
-
-				for (Question q: questionsList) {
-					if (q.getTitle() == questionClicked) {
-						for (Answer a: q.getAnswers()) {
-							answers.getItems().add(a.getText());
-							answersList.add(a);//!!
-						}
-					}
-				}		
-				groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers, btnFilterAnswers);//!
-			}
-		});
-		*/
+		}
 
 		btnAdd.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -554,43 +415,30 @@ public class Controller {
 				createAddQuestionPane(sm.getMember(member), sm.getGroup(groupTitle));
 				BorderPane bp = new BorderPane();
 				bp.setCenter(questionFormVB);
-				
 				bp.setLeft(membersEmailList);//M
 				membersEmailList.setOnMouseClicked(membersEmailListHandler(bp));//M
-						
 				mainFrame.setCenter(bp);
 			}
 		});
 
-		//beginning of my added code:
-		btnFilterQuestions.setOnAction(new EventHandler<ActionEvent>() {//!!!
+		btnFilterQuestions.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {		
-
-				
 				Label filterNumber = new Label("Number of Questions to filter: ");
 				TextField filterNumberTF = new TextField();
 				Button btnSubmit = new Button("Submit");
 				HBox filterQuestionsHBox = new HBox();
-
 				filterQuestionsHBox.getChildren().addAll(filterNumber, filterNumberTF);
 				VBox filterQuestionsSubmitVB = new VBox();
-				
 				filterQuestionsSubmitVB.getChildren().clear();
 				filterQuestionsSubmitVB.getChildren().addAll(filterNumber, filterNumberTF, btnSubmit);
 				groupInfoVB.getChildren().addAll(filterQuestionsSubmitVB);
-
-				btnSubmit.setOnAction(new EventHandler<ActionEvent>() {////!
+				btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {	
-
-						//Make sure input is an integer!
 						int filterNumber = Integer.parseInt(filterNumberTF.getText());
-						
-
 						if (filterNumber > questionsList.size() ) {
 							Label alert = new Label("Input must be an integer <= questionsList.size()!!");
-							
 							groupInfoVB.getChildren().add(alert);
 						} else {
 							createGroupPane(groupTitle, member,  membersEmailList, true, filterNumber );
@@ -601,8 +449,7 @@ public class Controller {
 			}
 		});
 
-
-		btnFilterAnswers.setOnAction(new EventHandler<ActionEvent>() {//!!!
+		btnFilterAnswers.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {		
 				Label filterNumber = new Label("Number of Answers to filter: ");
@@ -611,57 +458,33 @@ public class Controller {
 				HBox filterAnswersHBox = new HBox();
 				filterAnswersHBox.getChildren().addAll(filterNumber, filterNumberTF);
 				groupInfoVB.getChildren().addAll(filterAnswersHBox, btnSubmitAnswerFilter);
-
 				btnSubmitAnswerFilter.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {			
-						//Make sure input is an integer!
 						int filterNumber = Integer.parseInt(filterNumberTF.getText());
 						if (filterNumber > answersList.size() ) {
 							Label alert = new Label("Input must be an integer <= answersList.size()!!");
 							groupInfoVB.getChildren().add(alert);
 						} else {
-							//groupInfoVB.getChildren().clear();
 							ListView<String> filteredAnswers = new ListView<String>();
-							//for(Answer a : sm.getMember(member).getAnswers(sm.getGroup(groupTitle) ,filterNumber)) {
-							
 							System.out.println();
 							for (int i = 1; i <= filterNumber; i++)  {
 								filteredAnswers.getItems().add(clickedQuestion.getAnswers().get(clickedQuestion.getAnswers().size() - i).getText());
 							}
-							
-							//filteredAnswers.getItems().add(a.getText());
-							
-							
-							
-							//if(!answers.getItems().contains(a.getTitle())) {
-									//answers.getItems().add(a.getTitle());
-									//answersList.add(a);
-									//System.out.println(a.getTitle());
-								//}	
-
-							//}
 							answers.setMaxHeight(100);
 							groupInfoVB.getChildren().clear();
 							groupInfoVB.getChildren().addAll(questionsL, questions,btnFilterQuestions, answersL, filteredAnswers, btnFilterAnswers);
 						}	
-
 					}
 				});
-
 			}
-		});//@
-
-		//end of my added code!!
-
-
+		});
 
 		if (member == null) {
 			groupInfoVB.getChildren().addAll(groupL, questionsL, questions, memberL, members);
 		} else if (member != null) {
 			groupInfoVB.getChildren().addAll(groupL, questionsL, questions);
 		}
-
 		if(member != null) {
 			HBox buttonBox = new HBox();//!  difference (I put two buttons in an Hbox)
 			buttonBox.getChildren().addAll(btnAdd, btnFilterQuestions);
@@ -671,21 +494,12 @@ public class Controller {
 
 
 	private void createAddQuestionPane(Member member, Group group) {
-		/* My code
-		Label questionTitleL = new Label("Title");
-		TextField questionTitleTF = new TextField();
-		Label questionDescriptionL = new Label("Description");
-		TextArea questionDescriptionTA = new TextArea();
-		*/
-		//Matt's code begins here:
 		Label addQuestionL = new Label("Add Question");
 		Label questionTitleL = new Label("Title");
 		TextField questionTitleTF = new TextField();
 		Label questionDescriptionL = new Label("Description");
 		TextArea questionDescriptionTA = new TextArea();
 		questionDescriptionTA.setWrapText(true);
-		//Matts code ends here
-		
 		Button btnSubmitQuestion = new Button("Submit");
 		btnSubmitQuestion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -707,14 +521,13 @@ public class Controller {
 					System.out.println(error);
 				} 
 			}
-
 		});
 		HBox titleHBox = new HBox();
 		titleHBox.getChildren().addAll(questionTitleL, questionTitleTF);
-		// My code questionFormVB = new VBox(titleHBox, questionDescriptionL, questionDescriptionTA, btnSubmitQuestion);
 		questionFormVB = new VBox(addQuestionL,titleHBox, questionDescriptionL, questionDescriptionTA, btnSubmitQuestion);//M
 	}
 
+	
 	private void save() {
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
@@ -723,12 +536,4 @@ public class Controller {
 			System.out.println("ERROR: "+ e);
 		}
 	}
-
-
-
-
-
-
-
-
 }
