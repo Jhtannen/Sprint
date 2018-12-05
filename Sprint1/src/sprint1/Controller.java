@@ -379,6 +379,11 @@ public class Controller {
 					for(Group g: sm.getGroups(searchGroupsTF.getText())) {
 						groupTitles.getItems().add(g.getTitle());
 					}
+				} else {
+					groupTitles.getItems().clear();
+					for(Group g: sm.getGroups()) {
+						groupTitles.getItems().add(g.getTitle());
+					}
 				}
 			}
 			
@@ -431,9 +436,12 @@ public class Controller {
 
 	private void createGroupPane(String groupTitle, String member, ListView<String> membersEmailList, boolean filter, int filterNumber) {
 		groupInfoVB.getChildren().clear();
+		groupInfoVB.setPadding(new Insets(10,10,10,10));
+		groupInfoVB.setSpacing(5);
 		String memberEmail = member;
 		Label groupL = new Label(groupTitle);
 		Label questionsL = new Label();
+		Label commentL = new Label("Comments");
 		Label answersL = new Label("Answers (" + sm.getGroup(groupTitle).getAnswers().size() + ")" );
 		questionsL.setText("Questions (" + sm.getGroup(groupTitle).getQuestions().size() + ")" );
 		ListView<String> questions = new ListView<String>();
@@ -442,6 +450,7 @@ public class Controller {
 		answers.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		ArrayList<Question> questionsList = new ArrayList<Question>();
 		ArrayList<Answer> answersList = new ArrayList<Answer>();
+		ListView<String> comments = new ListView<String>();
 		Label memberL = new Label();
 		memberL.setText("Members (" + sm.getGroup(groupTitle).getNumOfMembers() + ")" );
 		ListView<String> members = new ListView<String>();
@@ -492,8 +501,14 @@ public class Controller {
 			questions.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
+					if(!questions.getItems().isEmpty()) {
+						
+					
 					ListView<String> answers = new ListView<String>();
 					String questionClicked = questions.getSelectionModel().getSelectedItem();
+					for(Comment comment : clickedQuestion.comments) {
+						comments.getItems().add(comment.getText());
+					}
 					for (Question q: questionsList) {
 						if (q.getTitle() == questionClicked) {
 							clickedQuestion = q;
@@ -506,7 +521,8 @@ public class Controller {
 					Label questionsL = new Label("Questions");
 					Label answersL = new Label("Answers");
 					groupInfoVB.getChildren().clear();
-					groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers, btnFilterAnswers);
+					groupInfoVB.getChildren().addAll(questionsL, questions, answersL, answers,commentL, comments, btnFilterAnswers);
+					}
 				}
 			});
 		}
@@ -596,7 +612,7 @@ public class Controller {
 		});
 
 		if (member == null) {
-			groupInfoVB.getChildren().addAll(groupL, questionsL, questions, memberL, members);
+			groupInfoVB.getChildren().addAll(groupL,new Label(sm.getGroup(groupTitle).getDescription()), questionsL, questions, memberL, members);
 		} else if (member != null) {
 			groupInfoVB.getChildren().addAll(groupL, questionsL, questions);
 		}

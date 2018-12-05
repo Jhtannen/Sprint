@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Date;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -56,7 +57,19 @@ public class IntMainTest {
     	for(Member m : sm.getMembers()) {
     		System.out.println(m);
     	}
+    	
+    	save();
     }
+    
+    protected static void save() {
+		try {
+			File file = new File("SiteManager_File");
+			FileOutputStream fos = new FileOutputStream(file);
+			pm.save(sm, fos);
+		} catch(Exception e) {
+			System.out.println("ERROR: "+ e);
+		}
+	}
     
     static void log(String msg) {
     	System.out.println(msg);
