@@ -51,8 +51,6 @@ public class Controller {
 	private ListView<String> membersEmailList = new ListView<String>();
 	protected VBox groupInfoVB = new VBox();
 	protected VBox questionFormVB = new VBox();
-	
-	protected VBox searchGroupsVB = new VBox();////////
 
 	@FXML
 	private ListView<String> options;
@@ -196,12 +194,10 @@ public class Controller {
 		for(Member m : members) {
 			membersEmailList.getItems().add(m.getEmailAddress()); 
 		}
-
 		membersEmailList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		if(member != null) {
 			membersEmailList.getSelectionModel().select(member);
 		}
-
 		membersEmailList.setOnMouseClicked(membersEmailListHandler( bp));
 		mainFrame.setCenter(bp);
 	}
@@ -283,11 +279,12 @@ public class Controller {
 		VBox groupsListVBox = new VBox();
 		Button getActiveGroupsB = new Button("Active Groups");
 		Button getPopularGroupsB = new Button("Popular Groups");
-		Button getMatchingGroupsB = new Button("Search Groups");///
-		TextField searchGroupsTF = new TextField();///////////////////////////
-		HBox searchBox = new HBox();//
-		searchBox.getChildren().addAll(getMatchingGroupsB,searchGroupsTF);///
-		groupsListVBox.getChildren().addAll(getActiveGroupsB, getPopularGroupsB, groupTitles, searchBox);//
+		Button getMatchingGroupsB = new Button("Search Groups");
+		TextField searchGroupsTF = new TextField();
+		HBox searchBox = new HBox();
+		searchBox.getChildren().addAll(getMatchingGroupsB,searchGroupsTF);
+		groupsListVBox.getChildren().addAll(getActiveGroupsB, getPopularGroupsB, groupTitles, searchBox);
+		
 		groupTitles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		BorderPane bp = new BorderPane();
 		bp.setLeft(groupsListVBox);
@@ -313,7 +310,7 @@ public class Controller {
 			}
 		});
 		
-		getMatchingGroupsB.setOnMouseClicked(new EventHandler<MouseEvent>() {///
+		getMatchingGroupsB.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				if (!searchGroupsTF.getText().isEmpty()) {
@@ -323,7 +320,7 @@ public class Controller {
 					}
 				}
 			}
-		});///
+		});
 
 		for(Group group : groups) {
 			groupTitles.getItems().add(group.getTitle());
