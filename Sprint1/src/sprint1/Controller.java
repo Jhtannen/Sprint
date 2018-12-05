@@ -51,6 +51,8 @@ public class Controller {
 	private ListView<String> membersEmailList = new ListView<String>();
 	protected VBox groupInfoVB = new VBox();
 	protected VBox questionFormVB = new VBox();
+	
+	protected VBox searchGroupsVB = new VBox();////////
 
 	@FXML
 	private ListView<String> options;
@@ -281,7 +283,11 @@ public class Controller {
 		VBox groupsListVBox = new VBox();
 		Button getActiveGroupsB = new Button("Active Groups");
 		Button getPopularGroupsB = new Button("Popular Groups");
-		groupsListVBox.getChildren().addAll(getActiveGroupsB, getPopularGroupsB, groupTitles);
+		Button getMatchingGroupsB = new Button("Search Groups");///
+		TextField searchGroupsTF = new TextField();///////////////////////////
+		HBox searchBox = new HBox();//
+		searchBox.getChildren().addAll(getMatchingGroupsB,searchGroupsTF);///
+		groupsListVBox.getChildren().addAll(getActiveGroupsB, getPopularGroupsB, groupTitles, searchBox);//
 		groupTitles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		BorderPane bp = new BorderPane();
 		bp.setLeft(groupsListVBox);
@@ -306,6 +312,18 @@ public class Controller {
 				}
 			}
 		});
+		
+		getMatchingGroupsB.setOnMouseClicked(new EventHandler<MouseEvent>() {///
+			@Override
+			public void handle(MouseEvent event) {
+				if (!searchGroupsTF.getText().isEmpty()) {
+					groupTitles.getItems().clear();
+					for (Group g: sm.getGroups(searchGroupsTF.getText() ) ) {
+						groupTitles.getItems().add(g.getTitle());
+					}
+				}
+			}
+		});///
 
 		for(Group group : groups) {
 			groupTitles.getItems().add(group.getTitle());
@@ -315,7 +333,7 @@ public class Controller {
 			@Override
 			public void handle(MouseEvent event) {
 				String groupTitle = groupTitles.getSelectionModel().getSelectedItem();
-				createGroupPane(groupTitle, null, null, false, 0);////!
+				createGroupPane(groupTitle, null, null, false, 0);
 			}
 		});
 		bp.setCenter(groupInfoVB);
