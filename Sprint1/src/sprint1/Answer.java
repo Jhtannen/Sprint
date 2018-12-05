@@ -7,7 +7,6 @@ import java.util.List;
 
 public class Answer extends Post implements Serializable  {
 
-	private String title;
 	private Question question;
 
 	public Answer (Question question, String text, LocalDateTime dateCreated) { 

@@ -6,11 +6,13 @@ import java.time.LocalDateTime;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 public class AnswerFormPane {
 	Member member;
@@ -28,8 +30,10 @@ public class AnswerFormPane {
 	}
 	
 	public VBox createAnswerFormPane() {
-		Label answerL = new Label("Add Answer to \n"+ question.getTitle());
-		Label questionDescriptionL = new Label(question.getText());
+		Label answerL = new Label("Add Answer");
+		answerL.setStyle("-fx-font-weight: bold;");
+		answerL.setFont(new Font("Arial", 30));
+		Label questionDescriptionL = new Label("Title: " + question.getTitle() + "\nDescription: " + question.getText());
 		TextArea answerTA = new TextArea();
 		answerTA.setWrapText(true);
 		answerTA.setMaxWidth(500.0);
@@ -48,6 +52,8 @@ public class AnswerFormPane {
 		});
 		VBox vb = new VBox();
 		vb.getChildren().addAll(answerL,questionDescriptionL, answerTA, btnSubmit);
+		
+		vb.setSpacing(5);
 		return vb;
 	}
 	protected void save() {

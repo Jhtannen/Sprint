@@ -9,6 +9,7 @@ public class Like implements Serializable{
 		this.upVoter = upVoter;
 	}
 	
+	
 	public Member getUpVoter() {
 		return upVoter;
 	}

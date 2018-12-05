@@ -34,14 +34,17 @@
 		</left>
 		
 		<center>
-		
-			<GridPane fx:id="mainFunction" vgap="10" hgap="10">
-			</GridPane>
-
+			
+				
+				
+				<GridPane fx:id="mainFunction" vgap="10" hgap="10">
+				</GridPane>
+			
 		</center>
 		<bottom>
 		<TextArea promptText="Welcome to Team 8 Site Manager" fx:id="optionInstructions" />
 		</bottom>
+		
 </BorderPane>
 
 			

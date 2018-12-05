@@ -56,11 +56,13 @@ abstract class Post implements Serializable{
 	// add like to a post
 	protected void addLike(Like like) {
 		likes.add(like);
+		membership.addPoints(10);
 	}
 
 	// add comment to a post
 	protected void addComment(Comment comment) {
 		comments.add(comment);
+		membership.addPoints(10);
 	}
 
 	//Permanently removes comment from post
@@ -68,6 +70,7 @@ abstract class Post implements Serializable{
 		for (Comment comment: comments) {
 			if (deleteComment.equals(comment)) {
 				comments.remove(comment);
+				membership.addPoints(-10);
 			}
 		}
 	} 

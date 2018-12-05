@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -35,6 +36,9 @@ public class QuestionControlPane {
 		Button btnAdd = new Button("Add Answer");
 		Button btnComment = new Button("Comment on Question");
 		Button btnLike =  new Button("Like Post");
+		HBox.setMargin(btnAdd, new Insets(10,10,10,10));
+		HBox.setMargin(btnComment, new Insets(10,10,10,10));
+		HBox.setMargin(btnLike, new Insets(10,10,10,10));
 		controls.getChildren().addAll(btnAdd,btnComment,btnLike);
 		controlPane.getChildren().addAll(questionL,controls);
 		
@@ -60,12 +64,13 @@ public class QuestionControlPane {
 			public void handle(ActionEvent event) {
 				Like like = new Like(member);
 				question.addLike(like);
-				System.out.println(question.likes.get(0).getUpVoter());
+				//System.out.println(question.likes.get(0).getUpVoter());
 				save();
 			}
 		});
 		
-		
+		controlPane.setPadding(new Insets(10,10,10,10));
+		controlPane.setSpacing(5);
 		
 		return controlPane;
 	}
